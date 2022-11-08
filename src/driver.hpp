@@ -60,6 +60,16 @@ public:
     int read_speed(uint32_t& read) {
         return _read(0x22, read);
     }
+//rozpracovano
+    bool set_index(int settings){
+        return _write(0x00, settings);
+    }
+
+    int read_index(uint32_t& read){
+        return _read
+        (0x00, read);
+    }
+
     
 
 
