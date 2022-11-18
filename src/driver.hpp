@@ -60,7 +60,7 @@ public:
     int read_speed(uint32_t& read) {
         return _read(0x22, read);
     }
-//rozpracovano
+//rozpracovano TMC documentation page 20
     bool set_index(int settings){
         return _write(0x00, settings);
     }

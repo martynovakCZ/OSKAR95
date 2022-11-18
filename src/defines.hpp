@@ -42,6 +42,7 @@ volatile int motor_speed1;      //svirani klepete
 volatile int motor_speed2;      //rotace zakladny
 volatile int motor_speed3;      //zdvih ramene s klepety
 volatile int motor_speed4;      //zdvih celeho ramene
+volatile int motor_speed = MOTOR_SPEED_COEFICIENT;       //testovaci motorspeed
 volatile int motor_load = 0;
 volatile int motor_stop_sensitivity = 100;
 volatile int potenciometr = 0;
