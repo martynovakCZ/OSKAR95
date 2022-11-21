@@ -216,7 +216,8 @@ extern "C" void app_main(void)
 
 
     while(1){
-        driver0.set_speed(motor_speed1/3);
+
+        /*driver0.set_speed(motor_speed1/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver1.set_speed(motor_speed2/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
@@ -245,7 +246,10 @@ extern "C" void app_main(void)
             vTaskDelay(200/portTICK_PERIOD_MS);
             conclusion=0;
         }
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        vTaskDelay(100 / portTICK_PERIOD_MS);*/
+
+            driver0.set_speed(motor_speed);
+            driver0.get_MSCNT(MSCNT_valuePtr);
 
     }
         
