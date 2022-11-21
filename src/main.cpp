@@ -6,10 +6,12 @@
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include "driver/periph_ctrl.h"
+#include "driver/ledc.h"
 #include "driver/gpio.h"
 #include "driver/pcnt.h"
 #include "esp_attr.h"
 #include "esp_log.h"
+#include "soc/gpio_sig_map.h"
 #include "esp_system.h"
 #include "nvs_flash.h"
 #include "nvs.h"
@@ -150,6 +152,13 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
     driver.set_IHOLD_IRUN (iRun, iHold);             //proud IHOLD =0, IRUN = 8/32 (při stání je motor volně otočný)
 }
 
+
+
+
+
+
+
+
 extern "C" void app_main(void)
 {   
     gpio_config_t io_conf;
@@ -214,6 +223,17 @@ extern "C" void app_main(void)
     Driver driver3 { drivers_uart, DRIVER_3_ADDRES, DRIVER_3_ENABLE };
     initDriver(driver3, 16, 31);
 
+    
+
+
+
+
+
+
+
+
+
+    IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_13, GPIO_NUM_0);
 
     while(1){
         /*driver0.set_speed(motor_speed1/3);
@@ -256,7 +276,9 @@ extern "C" void app_main(void)
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver3.set_speed(motor_speed/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
-
+        pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        printf("Current counter value :%d\n", pcnt0_count);
 
 
     }

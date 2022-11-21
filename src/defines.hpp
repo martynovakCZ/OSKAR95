@@ -53,3 +53,5 @@ volatile uint mot_load[2048];
 volatile uint mot_pos[2048];
 
 volatile bool conclusion;
+
+int16_t pcnt0_count = 0;
