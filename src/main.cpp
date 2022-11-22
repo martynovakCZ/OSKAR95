@@ -268,9 +268,11 @@ extern "C" void app_main(void)
         vTaskDelay(100 / portTICK_PERIOD_MS);*/
 
 
-        driver0.set_speed(motor_speed/3);
-        vTaskDelay(200/portTICK_PERIOD_MS);
         driver1.set_speed(motor_speed/3);
+        vTaskDelay(200/portTICK_PERIOD_MS);
+        driver1.set_speed(0);
+
+        /*driver1.set_speed(motor_speed/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver2.set_speed(motor_speed/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
@@ -278,7 +280,7 @@ extern "C" void app_main(void)
         vTaskDelay(200/portTICK_PERIOD_MS);
         pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
         vTaskDelay(1000 / portTICK_PERIOD_MS);
-        printf("Current counter value :%d\n", pcnt0_count);
+        printf("Current counter value :%d\n", pcnt0_count);*/
 
 
     }
