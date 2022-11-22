@@ -33,7 +33,7 @@ void encoder_init(const pcnt_unit_t unit, const gpio_num_t pinA, const gpio_num_
         .pos_mode = PCNT_COUNT_INC,
         .neg_mode = PCNT_COUNT_DEC,
         .counter_h_lim = ENCODER_H_LIM_VAL,
-        .counter_l_lim = ENCODER_L_LIM_VAL,
+        .counter_l_lim =ENCODER_L_LIM_VAL,
         .unit = unit,
         .channel = PCNT_CHANNEL_1,
     };
@@ -67,3 +67,27 @@ void nvs_init()
     }
     ESP_ERROR_CHECK( err );
 }
+
+    void IndexStepCounter_init(const pcnt_unit_t unit, const gpio_num_t pinA, const gpio_num_t pinB){
+    pcnt_config_t pcnt_config = {
+        .pulse_gpio_num = pinA,
+        .ctrl_gpio_num = pinB,
+        .lctrl_mode = PCNT_MODE_KEEP,
+        .hctrl_mode = PCNT_MODE_REVERSE,
+        .pos_mode = PCNT_COUNT_DIS,
+        .neg_mode = PCNT_COUNT_DEC,
+        .counter_h_lim = ENCODER_H_LIM_VAL,
+        .counter_l_lim = ENCODER_L_LIM_VAL,
+        .unit = unit,
+        .channel = PCNT_CHANNEL_0,
+        };
+
+    pcnt_unit_config(&pcnt_config);
+//---------------------------------------------------------------------------------------
+    pcnt_counter_pause(unit);
+    pcnt_counter_clear(unit);
+
+    pcnt_intr_enable(unit);
+
+    pcnt_counter_resume(unit);
+    };

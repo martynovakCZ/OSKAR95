@@ -249,7 +249,7 @@ extern "C" void app_main(void)
         vTaskDelay(100 / portTICK_PERIOD_MS);*/
 
             driver0.set_speed(motor_speed);
-            driver0.get_MSCNT(MSCNT_valuePtr);
+            driver0.get_MSCNT(MSCNT_value);
 
     }
         

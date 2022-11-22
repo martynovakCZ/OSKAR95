@@ -53,5 +53,4 @@ volatile uint mot_load[2048];
 volatile uint mot_pos[2048];
 
 volatile bool conclusion;
-volatile uint32_t MSCNT_value;
-volatile uint32_t* MSCNT_valuePtr; //= &MSCNT_value; 
+uint32_t MSCNT_value;
