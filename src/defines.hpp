@@ -37,6 +37,7 @@
 #define ENCODER_H_LIM_VAL         1000
 #define ENCODER_L_LIM_VAL        -1000
 
+
 // globální proměnné pro pokusy s grafickým rozhraním
 volatile int motor_speed1;      //svirani klepete
 volatile int motor_speed2;      //rotace zakladny
@@ -58,3 +59,9 @@ int16_t pcnt0_count = 0;
 int16_t pcnt1_count = 0;
 int16_t pcnt2_count = 0;
 int16_t pcnt3_count = 0;
+
+
+
+#define PCNT_H_LIM_VAL            10000
+#define PCNT_L_LIM_VAL            0
+

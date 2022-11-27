@@ -158,7 +158,6 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
 
 
-
 extern "C" void app_main(void)
 {   
     gpio_config_t io_conf;
@@ -233,12 +232,37 @@ extern "C" void app_main(void)
 
 
 
+    /* Initialize PCNT event queue and PCNT functions */
+    pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
+    pcnt_evt_t evt;
+    portBASE_TYPE res;
+
     IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_1, GPIO_NUM_18, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
 
+
+
     while(1){
+        res = xQueueReceive(pcnt_evt_queue, &evt, 1000 / portTICK_PERIOD_MS);
+        if (res == pdTRUE) {
+            pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
+            pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
+            pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
+            pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
+
+            printf("Event PCNT unit[%d]; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);
+
+            if (evt.status & PCNT_STATUS_H_LIM_M) {
+                printf("H_LIM EVT\n");
+            }
+        } else {
+            pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
+            pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
+            pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
+            pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
+            printf("Current counter value :%d; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);
         /*driver0.set_speed(motor_speed1/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver1.set_speed(motor_speed2/3);
@@ -283,7 +307,7 @@ extern "C" void app_main(void)
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver3.set_speed(motor_speed/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
-        pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
+        /*pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
         pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
         pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
         pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
@@ -291,11 +315,12 @@ extern "C" void app_main(void)
         printf("Current counter 0 value :%d\n", pcnt0_count);
         printf("Current counter 1 value :%d\n", pcnt1_count);
         printf("Current counter 2 value :%d\n", pcnt2_count);
-        printf("Current counter 3 value :%d\n", pcnt3_count);
+        printf("Current counter 3 value :%d\n", pcnt3_count);*/
 
 
-    }
+        }
         
+    }
         //driver1.set_speed(motor_speed);
         //vTaskDelay(2000/portTICK_PERIOD_MS);
 
