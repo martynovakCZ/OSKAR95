@@ -89,6 +89,6 @@ void StepMove::pcnt_intr_handler(void *arg){
 }
 
 //@param for clockwise direction  -1  else 1
-void MoveMotor(Driver object, int motor_speed, int steps){
+void StepMove::MoveMotor(Driver driver, int motor_speed, int steps){
     
 }
