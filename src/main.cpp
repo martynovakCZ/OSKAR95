@@ -24,6 +24,7 @@
 #include "rbprotocol.h"     //  pro grafické rozhraní
 #include "rbwebserver.h"    //  pro grafické rozhraní
 #include "rbwifi.h"         //  pro grafické rozhraní
+#include "stepMove.hpp"     //pro rizeni motoru po krocich
 
 using namespace rb;
 
@@ -232,6 +233,7 @@ extern "C" void app_main(void)
 
 
 
+    
     /* Initialize PCNT event queue and PCNT functions */
     pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
     pcnt_evt_t evt;
