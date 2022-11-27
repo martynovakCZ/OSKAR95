@@ -55,3 +55,6 @@ volatile uint mot_pos[2048];
 volatile bool conclusion;
 
 int16_t pcnt0_count = 0;
+int16_t pcnt1_count = 0;
+int16_t pcnt2_count = 0;
+int16_t pcnt3_count = 0;
