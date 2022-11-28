@@ -20,6 +20,8 @@
 #include "init.hpp"
 #include "uart.hpp"
 #include "driver.hpp"
+#include "conclusions.hpp"
+#include "pcnt.hpp"
 #include "gridui.h"         //  pro grafické rozhraní          
 #include "rbprotocol.h"     //  pro grafické rozhraní
 #include "rbwebserver.h"    //  pro grafické rozhraní
@@ -231,8 +233,7 @@ extern "C" void app_main(void)
 
 
 
-
-    /* Initialize PCNT event queue and PCNT functions */
+    //PCNT UNIT //NELZE DAT DO PCNT.HPP
     pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
     pcnt_evt_t evt;
     portBASE_TYPE res;
@@ -245,6 +246,7 @@ extern "C" void app_main(void)
 
 
     while(1){
+ 
         res = xQueueReceive(pcnt_evt_queue, &evt, 1000 / portTICK_PERIOD_MS);
         if (res == pdTRUE) {
             pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
@@ -263,6 +265,9 @@ extern "C" void app_main(void)
             pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
             pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
             printf("Current counter value :%d; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);
+            return;  
+        }
+
         /*driver0.set_speed(motor_speed1/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver1.set_speed(motor_speed2/3);
@@ -319,10 +324,5 @@ extern "C" void app_main(void)
 
 
         }
-        
-    }
-        //driver1.set_speed(motor_speed);
-        //vTaskDelay(2000/portTICK_PERIOD_MS);
-
         
 }
