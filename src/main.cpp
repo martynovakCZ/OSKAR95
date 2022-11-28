@@ -22,6 +22,7 @@
 #include "driver.hpp"
 #include "conclusions.hpp"
 #include "pcnt.hpp"
+#include "stepmoving.hpp"
 #include "gridui.h"         //  pro grafické rozhraní          
 #include "rbprotocol.h"     //  pro grafické rozhraní
 #include "rbwebserver.h"    //  pro grafické rozhraní
@@ -30,38 +31,7 @@
 using namespace rb;
 
 
-    //kontrola koncovych dojezdu
-void check_conclusion(){
 
-//koncovy bod zdvihu celeho ramene
-    printf("kontrola koncaku \n");
-    if (gpio_get_level(opto2) == 1){
-        conclusion=1;
-
-        //return;
-        }
-//koncovy bod pro optozavoru otaceni podstavy
-    if (gpio_get_level(opto1) == 1){
-        conclusion=1;
-
-        //return;
-        }
-//koncovy bod stisk klepet
-    if (gpio_get_level(opto4) == 1){
-        conclusion=1;
-
-       // return;
-        }
-//koncovy bod ramene s klepety
-    if (gpio_get_level(opto3) == 1){    
-        conclusion=1;
-
-        //return;
-        }
-}
-
-void pushBack(int optol, int pushTime){
-}
 
 static void initGridUi() {
     using namespace gridui;
@@ -155,6 +125,22 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 }
 
 
+    void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps, object driver0){
+        MultiSteps0 = driver0steps / ENCODER_H_LIM_VAL;
+
+
+        driver0.set_speed(motor_speed/3);
+        vTaskDelay(200/portTICK_PERIOD_MS);
+        driver1.set_speed(motor_speed/3);
+        vTaskDelay(200/portTICK_PERIOD_MS);
+        driver2.set_speed(motor_speed/3);
+        vTaskDelay(200/portTICK_PERIOD_MS);
+        driver3.set_speed(motor_speed/3);
+        vTaskDelay(200/portTICK_PERIOD_MS);
+        while(1){
+            if 
+        }
+}
 
 
 
@@ -245,6 +231,7 @@ extern "C" void app_main(void)
 
 
 
+
     while(1){
  
         res = xQueueReceive(pcnt_evt_queue, &evt, 1000 / portTICK_PERIOD_MS);
@@ -265,8 +252,6 @@ extern "C" void app_main(void)
             pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
             pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
             printf("Current counter value :%d; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);
-            return;  
-        }
 
         /*driver0.set_speed(motor_speed1/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
@@ -304,14 +289,14 @@ extern "C" void app_main(void)
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver1.set_speed(0);*/
 
-        driver0.set_speed(motor_speed/3);
+        /*driver0.set_speed(motor_speed/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver1.set_speed(motor_speed/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver2.set_speed(motor_speed/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
         driver3.set_speed(motor_speed/3);
-        vTaskDelay(200/portTICK_PERIOD_MS);
+        vTaskDelay(200/portTICK_PERIOD_MS);*/
         /*pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
         pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
         pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);

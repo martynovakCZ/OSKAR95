@@ -65,4 +65,8 @@ int16_t pcnt3_count = 0;
 #define PCNT_H_LIM_VAL            10000
 #define PCNT_L_LIM_VAL            0
 
+volatile int MultiSteps0; 
+volatile int MultiSteps1; 
+volatile int MultiSteps2; 
+volatile int MultiSteps3; 
 
