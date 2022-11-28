@@ -125,8 +125,9 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 }
 
 
-    void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps, object driver0){
-        MultiSteps0 = driver0steps / ENCODER_H_LIM_VAL;
+    void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps, Driver driver0, Driver driver1, Driver driver2, Driver driver3){
+        int MaxiSteps0 = driver0Steps / ENCODER_H_LIM_VAL;
+        int MediumSteps0 = driver0Steps - (MaxiSteps0 * ENCODER_H_LIM_VAL)
 
 
         driver0.set_speed(motor_speed/3);
@@ -138,7 +139,9 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         driver3.set_speed(motor_speed/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
         while(1){
-            if 
+            if (){
+
+            }
         }
 }
 
@@ -306,8 +309,6 @@ extern "C" void app_main(void)
         printf("Current counter 1 value :%d\n", pcnt1_count);
         printf("Current counter 2 value :%d\n", pcnt2_count);
         printf("Current counter 3 value :%d\n", pcnt3_count);*/
-
-
         }
-        
+    }   
 }
