@@ -32,3 +32,13 @@ void check_conclusion(){
 
 void pushBack(int optol, int pushTime){
 }
+
+void synchronizeMotor(Driver driver, gpio_num_t opto, int direction){
+    driver.set_speed(motor_speed * direction);
+    while(1){
+        if(opto != 1){
+            driver.set_speed(0);
+            return;
+        }
+    }
+}
