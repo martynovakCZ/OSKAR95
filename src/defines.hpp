@@ -39,11 +39,11 @@
 
 
 // globální proměnné pro pokusy s grafickým rozhraním
-volatile int motor_speed1;      //svirani klepete
-volatile int motor_speed2;      //rotace zakladny
-volatile int motor_speed3;      //zdvih ramene s klepety
-volatile int motor_speed4;      //zdvih celeho ramene
-volatile int motor_speed = MOTOR_SPEED_COEFICIENT;       //testovaci motorspeed
+volatile int motor_speed1 = MOTOR_SPEED_COEFICIENT/3;      //svirani klepete
+volatile int motor_speed2 = MOTOR_SPEED_COEFICIENT/3;      //rotace zakladny
+volatile int motor_speed3 = MOTOR_SPEED_COEFICIENT/3;      //zdvih ramene s klepety
+volatile int motor_speed4 = MOTOR_SPEED_COEFICIENT/3;      //zdvih celeho ramene
+volatile int motor_speed = MOTOR_SPEED_COEFICIENT/3;       //testovaci motorspeed
 volatile int motor_load = 0;
 volatile int motor_stop_sensitivity = 100;
 volatile int potenciometr = 0;
@@ -53,7 +53,7 @@ volatile bool start_stop = false;
 volatile uint mot_load[2048];
 volatile uint mot_pos[2048];
 
-volatile int motor_delay=50;
+volatile int motor_delay=5;
 
 volatile bool conclusion;
 
@@ -64,7 +64,7 @@ int16_t pcnt3_count = 0;
 
 
 
-#define PCNT_H_LIM_VAL            1000
+#define PCNT_H_LIM_VAL            34
 #define PCNT_L_LIM_VAL            0
 
 volatile int FinalStep0=0; 

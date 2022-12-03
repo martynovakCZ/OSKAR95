@@ -146,6 +146,35 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         vTaskDelay(motor_delay/portTICK_PERIOD_MS);
 
         while(1){
+        res = xQueueReceive(pcnt_evt_queue, &evt, 0 / portTICK_PERIOD_MS);
+        if (res == pdTRUE) {
+           /* pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
+            pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
+            pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
+            pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
+
+            printf("Event PCNT unit[%d]; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);*/
+
+            if (evt.status & PCNT_STATUS_H_LIM_M) {
+                printf("H_LIM EVT\n");
+                switch(evt.unit) {
+                    case 0:
+                        FinalStep0 ++;
+                        break;
+                    case 1:
+                        FinalStep1 ++;
+                        break;
+                    case 2:
+                        FinalStep2 ++;
+                        break;
+                    case 3:
+                        FinalStep3 ++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } else {
                 printf("FINALSTEP0:%d\n", FinalStep0);
                 printf("FINALSTEP1:%d\n", FinalStep1);
                 printf("FINALSTEP2:%d\n", FinalStep2);
@@ -158,24 +187,24 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                 printf("driver1Steps:%d\n", driver1Steps);
                 printf("driver2Steps:%d\n", driver2Steps);
                 printf("driver3Steps:%d\n", driver3Steps);
-            if (driver0Steps + startSteps0 == FinalStep0){
-                driver0.set_speed(motor_speed);
+            if (driver0Steps + startSteps0 <= FinalStep0){
+                driver0.set_speed(0);
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
             }
-            if (driver1Steps + startSteps1 == FinalStep1){
-                driver1.set_speed(motor_speed);
+            if (driver1Steps + startSteps1 <= FinalStep1){
+                driver1.set_speed(0);
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
             }
-            if (driver2Steps + startSteps2 == FinalStep2){
-                driver2.set_speed(motor_speed);
+            if (driver2Steps + startSteps2 <= FinalStep2){
+                driver2.set_speed(0);
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
             }
-            if (driver3Steps + startSteps3 == FinalStep3){
-                driver3.set_speed(motor_speed);
+            if (driver3Steps + startSteps3 <= FinalStep3){
+                driver3.set_speed(0);
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
             }
 
-            if((driver0Steps + startSteps0==FinalStep0) && (driver1Steps +  startSteps1==FinalStep1) && (driver2Steps +  startSteps2==FinalStep2) && (driver3Steps +  startSteps3==FinalStep3)) 
+            if((driver0Steps + startSteps0 <= FinalStep0) && (driver1Steps +  startSteps1 <= FinalStep1) && (driver2Steps +  startSteps2 <= FinalStep2) && (driver3Steps +  startSteps3 <= FinalStep3)) 
             {   
                 driver0.set_speed(0);
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
@@ -192,7 +221,9 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                 return;
             }        
         }
-}
+        }
+    }
+
 
 
 
@@ -271,10 +302,6 @@ extern "C" void app_main(void)
 
 
 
-    //PCNT UNIT //NELZE DAT DO PCNT.HPP
-    pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
-    pcnt_evt_t evt;
-    portBASE_TYPE res;
 
     IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_1, GPIO_NUM_18, GPIO_NUM_0);
@@ -293,44 +320,16 @@ extern "C" void app_main(void)
 
 
 
-    while(1){
+            movePosition(360, 0, 0, 0, driver0, driver1, driver2, driver3);
+            return;
+   // while(1){
  
-        res = xQueueReceive(pcnt_evt_queue, &evt, 0 / portTICK_PERIOD_MS);
-        if (res == pdTRUE) {
-           /* pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
-            pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
-            pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
-            pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
-
-            printf("Event PCNT unit[%d]; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);*/
-
-            if (evt.status & PCNT_STATUS_H_LIM_M) {
-                printf("H_LIM EVT\n");
-                switch(evt.unit) {
-                    case 0:
-                        FinalStep0 ++;
-                        break;
-                    case 1:
-                        FinalStep1 ++;
-                        break;
-                    case 2:
-                        FinalStep2 ++;
-                        break;
-                    case 3:
-                        FinalStep3 ++;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        } else {
+       
             /*pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
             pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
             pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
             pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
             printf("Current counter value :%d; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);*/
-            movePosition(200, 0, 0, 0, driver0, driver1, driver2, driver3);
-            return;
 
         /*driver0.set_speed(motor_speed1/3);
         vTaskDelay(200/portTICK_PERIOD_MS);
@@ -379,5 +378,5 @@ extern "C" void app_main(void)
         printf("Current counter 2 value :%d\n", pcnt2_count);
         printf("Current counter 3 value :%d\n", pcnt3_count);*/
         }
-    }   
-}
+    //}   
+//}
