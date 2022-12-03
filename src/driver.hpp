@@ -11,8 +11,8 @@ class
 
 Driver {
     Driver() = delete;
-    Driver(const Driver&) = delete;
-    void operator = (const Driver&) = delete;
+    //Driver(const Driver&) = delete;
+    //void operator = (const Driver&) = delete;
 
     typedef uint32_t data_t;
 public:
