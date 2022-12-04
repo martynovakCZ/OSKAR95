@@ -175,7 +175,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                 }
             }
         } else {
-                printf("FINALSTEP0:%d\n", FinalStep0);
+                /*printf("FINALSTEP0:%d\n", FinalStep0);
                 printf("FINALSTEP1:%d\n", FinalStep1);
                 printf("FINALSTEP2:%d\n", FinalStep2);
                 printf("FINALSTEP3:%d\n", FinalStep3);
@@ -186,7 +186,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                 printf("driver0Steps:%d\n", driver0Steps);
                 printf("driver1Steps:%d\n", driver1Steps);
                 printf("driver2Steps:%d\n", driver2Steps);
-                printf("driver3Steps:%d\n", driver3Steps);
+                printf("driver3Steps:%d\n", driver3Steps);*/
             if (driver0Steps + startSteps0 <= FinalStep0){
                 driver0.set_speed(0);
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
@@ -223,10 +223,89 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         }
         }
     }
+    void moveMotor(int steps, int dir, Driver driver){   
+         //dir can be just 1 or -1 to express direction of moving
+        //PCNT UNIT //NELZE DAT DO PCNT.HPP
+        pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
+        pcnt_evt_t evt;
+        portBASE_TYPE res;
 
+        int currentSteps=0;
+        driver.set_speed(motor_speed*dir);
+        vTaskDelay(motor_delay/portTICK_PERIOD_MS);
 
+        while(1){
+        res = xQueueReceive(pcnt_evt_queue, &evt, 0 / portTICK_PERIOD_MS);
+        if (res == pdTRUE) {
+           /* pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
+            pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
+            pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
+            pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
 
+            printf("Event PCNT unit[%d]; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);*/
 
+            if (evt.status & PCNT_STATUS_H_LIM_M) {
+                printf("H_LIM EVT\n");
+                switch(evt.unit) {
+                    case 0:
+                        currentSteps ++;
+                        break;
+                    case 1:
+                        currentSteps ++;
+                        break;
+                    case 2:
+                        currentSteps ++;
+                        break;
+                    case 3:
+                        currentSteps ++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } else {
+                /*printf("FINALSTEP0:%d\n", FinalStep0);
+                printf("FINALSTEP1:%d\n", FinalStep1);
+                printf("FINALSTEP2:%d\n", FinalStep2);
+                printf("FINALSTEP3:%d\n", FinalStep3);
+                printf("startSteps0:%d\n", startSteps0);
+                printf("startSteps1:%d\n", startSteps1);
+                printf("startSteps2:%d\n", startSteps2);
+                printf("startSteps3:%d\n", startSteps3);
+                printf("driver0Steps:%d\n", driver0Steps);
+                printf("driver1Steps:%d\n", driver1Steps);
+                printf("driver2Steps:%d\n", driver2Steps);
+                printf("driver3Steps:%d\n", driver3Steps);*/
+            if ( steps <= currentSteps){
+                driver.set_speed(0);
+                vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+                return;
+            }
+        }
+        }        
+    }
+
+    void pushBack(Driver driver, int dir, int pushSteps){
+    moveMotor(50, -1, driver);
+    }
+    void synchronizeMotor(Driver driver, gpio_num_t opto, int direction){
+    driver.set_speed(motor_speed * direction);
+        while(1){
+            if(opto == 1){
+                driver.set_speed(0);
+                pushBack(driver, direction*(-1), 50);
+                return;
+            }
+        }
+    }
+    void synchronizeAllMotors(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opro1, gpio_num_t opro2, gpio_num_t opro3){
+        synchronizeMotor(driver0, opto0, 1);
+        synchronizeMotor(driver1, opto1, 1);
+        synchronizeMotor(driver2, opto2, -1);
+        synchronizeMotor(driver3, opto3, -1);
+    }
+   
+    
 
 
 extern "C" void app_main(void)
@@ -308,8 +387,11 @@ extern "C" void app_main(void)
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
 
-
-    movePosition(0, 0, 0, 0, 1, 1, 1, 1, driver0, driver1, driver2, driver3);
+    checkOptos();
+    //movePosition(0, 0, 0, 0, 1, 1, 1, 1, driver0, driver1, driver2, driver3);
     return;
    
 }
+
+
+

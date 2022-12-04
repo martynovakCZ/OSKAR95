@@ -9,10 +9,10 @@
 #define DRIVER_2_ENABLE           GPIO_NUM_23   // H= disable motor output
 #define DRIVER_3_ENABLE           GPIO_NUM_23   // H= disable motor output
 
-#define opto2                     GPIO_NUM_34   // zdvih celeho ramene
-#define opto1                     GPIO_NUM_35   // optozavora podstavy
-#define opto4                     GPIO_NUM_36   // stisk klepet
-#define opto3                     GPIO_NUM_39   // rameno s klepety
+#define opto1                     GPIO_NUM_34   // zdvih celeho ramene
+#define opto0                     GPIO_NUM_35   // optozavora podstavy
+#define opto3                     GPIO_NUM_36   // stisk klepet
+#define opto2                     GPIO_NUM_39   // rameno s klepety
 
 #define VCC_IO_0                  GPIO_NUM_33  // L = reset driver 0, H = driver0 on
 #define VCC_IO_1                  GPIO_NUM_25  // L = reset driver 0, H = driver0 on
