@@ -125,8 +125,8 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 }
 
 
-    void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps, Driver driver0, Driver driver1, Driver driver2, Driver driver3){
-
+    void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps,int dir0, int dir1, int dir2, int dir3, Driver driver0, Driver driver1, Driver driver2, Driver driver3){
+            //dir can be just 1 or -1 to express direction of moving
             //PCNT UNIT //NELZE DAT DO PCNT.HPP
         pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
         pcnt_evt_t evt;
@@ -136,13 +136,13 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         int startSteps1 = FinalStep1;
         int startSteps2 = FinalStep2;
         int startSteps3 = FinalStep3;
-        driver0.set_speed(motor_speed);
+        driver0.set_speed(motor_speed*dir0);
         vTaskDelay(motor_delay/portTICK_PERIOD_MS);
-        driver1.set_speed(motor_speed);
+        driver1.set_speed(motor_speed*dir1);
         vTaskDelay(motor_delay/portTICK_PERIOD_MS);
-        driver2.set_speed(motor_speed);
+        driver2.set_speed(motor_speed*dir2);
         vTaskDelay(motor_delay/portTICK_PERIOD_MS);
-        driver3.set_speed(motor_speed);
+        driver3.set_speed(motor_speed*dir3);
         vTaskDelay(motor_delay/portTICK_PERIOD_MS);
 
         while(1){
@@ -282,16 +282,16 @@ extern "C" void app_main(void)
         }
     };
     Driver driver0 { drivers_uart, DRIVER_0_ADDRES, DRIVER_0_ENABLE };
-    initDriver(driver0, 16, 31);
+    initDriver(driver0, 16, 32);
 
     Driver driver1 { drivers_uart, DRIVER_1_ADDRES, DRIVER_1_ENABLE };
-    initDriver(driver1, 16, 31);
+    initDriver(driver1, 16, 32);
 
     Driver driver2 { drivers_uart, DRIVER_2_ADDRES, DRIVER_2_ENABLE };
-    initDriver(driver2, 16, 31);
+    initDriver(driver2, 16, 32);
 
     Driver driver3 { drivers_uart, DRIVER_3_ADDRES, DRIVER_3_ENABLE };
-    initDriver(driver3, 16, 31);
+    initDriver(driver3, 16, 32);
 
     
 
@@ -308,75 +308,8 @@ extern "C" void app_main(void)
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
 
-        /*driver0.set_speed(motor_speed);
-        vTaskDelay(200/portTICK_PERIOD_MS);
-        driver1.set_speed(motor_speed);
-        vTaskDelay(200/portTICK_PERIOD_MS);
-        driver2.set_speed(motor_speed);
-        vTaskDelay(200/portTICK_PERIOD_MS);
-        driver3.set_speed(motor_speed);
-        vTaskDelay(200/portTICK_PERIOD_MS);*/
 
-
-
-
-            movePosition(360, 0, 0, 0, driver0, driver1, driver2, driver3);
-            return;
-   // while(1){
- 
-       
-            /*pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
-            pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
-            pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
-            pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
-            printf("Current counter value :%d; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);*/
-
-        /*driver0.set_speed(motor_speed1/3);
-        vTaskDelay(200/portTICK_PERIOD_MS);
-        driver1.set_speed(motor_speed2/3);
-        vTaskDelay(200/portTICK_PERIOD_MS);
-        driver2.set_speed(motor_speed3/3);
-        vTaskDelay(200/portTICK_PERIOD_MS);
-        driver3.set_speed(motor_speed4/3);
-        vTaskDelay(200/portTICK_PERIOD_MS);
-        check_conclusion();
-        if(conclusion==1){
-            driver0.set_speed((motor_speed1/3)*(-1));
-            vTaskDelay(600/portTICK_PERIOD_MS);
-            driver1.set_speed((motor_speed2/3)*(-1));
-            vTaskDelay(600/portTICK_PERIOD_MS);
-            driver2.set_speed((motor_speed3/3)*(-1));
-            vTaskDelay(600/portTICK_PERIOD_MS);
-            driver3.set_speed((motor_speed4/3)*(-1));
-            vTaskDelay(600/portTICK_PERIOD_MS);
-            
-            driver0.set_speed(0);
-            vTaskDelay(200/portTICK_PERIOD_MS);
-            driver1.set_speed(0);
-            vTaskDelay(200/portTICK_PERIOD_MS);
-            driver2.set_speed(0);
-            vTaskDelay(200/portTICK_PERIOD_MS);
-            driver3.set_speed(0);
-            vTaskDelay(200/portTICK_PERIOD_MS);
-            conclusion=0;
-        }
-        vTaskDelay(100 / portTICK_PERIOD_MS);*/
-
-
-        /*driver1.set_speed(motor_speed/3);
-        vTaskDelay(200/portTICK_PERIOD_MS);
-        driver1.set_speed(0);*/
-
-
-        /*pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
-        pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
-        pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
-        pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-        printf("Current counter 0 value :%d\n", pcnt0_count);
-        printf("Current counter 1 value :%d\n", pcnt1_count);
-        printf("Current counter 2 value :%d\n", pcnt2_count);
-        printf("Current counter 3 value :%d\n", pcnt3_count);*/
-        }
-    //}   
-//}
+    movePosition(0, 0, 0, 0, 1, 1, 1, 1, driver0, driver1, driver2, driver3);
+    return;
+   
+}

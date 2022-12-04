@@ -1,9 +1,9 @@
 #pragma once
 
-#define DRIVER_0_ADDRES           0//podstava nahoru
-#define DRIVER_1_ADDRES           1  //podstava kladn7 doleva
-#define DRIVER_2_ADDRES           2  
-#define DRIVER_3_ADDRES           3  
+#define DRIVER_0_ADDRES           0  //podstava kladný doprava kladný k závoře
+#define DRIVER_1_ADDRES           1  //klepeta kladný roztahuje kladný k závoře
+#define DRIVER_2_ADDRES           2  //část s klepety (loket ruky) kladný dolů od optozávory
+#define DRIVER_3_ADDRES           3  //cele rameno dolu kladny dolu kladny od zavory
 #define DRIVER_0_ENABLE           GPIO_NUM_23   // H= disable motor output
 #define DRIVER_1_ENABLE           GPIO_NUM_23   // H= disable motor output
 #define DRIVER_2_ENABLE           GPIO_NUM_23   // H= disable motor output
