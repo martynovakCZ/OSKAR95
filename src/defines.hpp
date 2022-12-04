@@ -3,15 +3,15 @@
 #define DRIVER_0_ADDRES           0  //podstava kladný doprava kladný k závoře
 #define DRIVER_1_ADDRES           1  //klepeta kladný roztahuje kladný k závoře
 #define DRIVER_2_ADDRES           2  //část s klepety (loket ruky) kladný dolů od optozávory
-#define DRIVER_3_ADDRES           3  //cele rameno dolu kladny dolu kladny od zavory
+#define DRIVER_3_ADDRES           3  //cele rameno dolu kladny dolu kladny od zavor
 #define DRIVER_0_ENABLE           GPIO_NUM_23   // H= disable motor output
 #define DRIVER_1_ENABLE           GPIO_NUM_23   // H= disable motor output
 #define DRIVER_2_ENABLE           GPIO_NUM_23   // H= disable motor output
 #define DRIVER_3_ENABLE           GPIO_NUM_23   // H= disable motor output
 
-#define opto1                     GPIO_NUM_34   // zdvih celeho ramene
-#define opto0                     GPIO_NUM_35   // optozavora podstavy
-#define opto3                     GPIO_NUM_36   // stisk klepet
+#define opto3                     GPIO_NUM_34   // optozavora podstavy
+#define opto0                     GPIO_NUM_35   // zdvih celeho ramene  
+#define opto1                     GPIO_NUM_36   // stisk klepet
 #define opto2                     GPIO_NUM_39   // rameno s klepety
 
 #define VCC_IO_0                  GPIO_NUM_33  // L = reset driver 0, H = driver0 on

@@ -38,7 +38,7 @@ void check_conclusion(){
 void checkOptos(){
         printf("kontrola koncaku \n");
   while(1){
-//koncovy bod zdvihu celeho ramene
+//koncovy bod stisk klepet
     if (gpio_get_level(opto1) == 1){
         conclusion=1;
         printf("opto1 \n"); 
@@ -50,7 +50,7 @@ void checkOptos(){
         printf("opto0 \n"); 
         //return;
         }
-//koncovy bod stisk klepet
+//koncovy bod zdvihu celeho ramene
     if (gpio_get_level(opto3) == 1){
         conclusion=1;
         printf("opto3 \n"); 
