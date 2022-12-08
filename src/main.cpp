@@ -433,11 +433,11 @@ extern "C" void app_main(void)
     printf("opto level begin\n");
 
 
-    driver0.set_speed(motor_speed1*(-1));
-    driver1.set_speed(motor_speed2*(-1));
-    driver2.set_speed(motor_speed);
-    driver3.set_speed(motor_speed);
-    
+    driver0.set_speed(motor_speed1);
+    driver1.set_speed(motor_speed2);
+    driver2.set_speed(motor_speed*(-1));
+    driver3.set_speed(motor_speed*(-1));
+
     testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     vTaskDelay(500/portTICK_PERIOD_MS);
 
@@ -448,7 +448,7 @@ extern "C" void app_main(void)
     IndexStepCounter_init(PCNT_UNIT_1, GPIO_NUM_18, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
-    movePosition(100, 100, 100, 100, 1, 1, -1, -1, driver0, driver1, driver2, driver3);
+    movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
     return;
    
 }
