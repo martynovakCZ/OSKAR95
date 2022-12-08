@@ -214,15 +214,56 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
                 driver3.set_speed(0);
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
-                printf("FINALSTEP0:%d\n", FinalStep0);
+               /* printf("FINALSTEP0:%d\n", FinalStep0);
                 printf("FINALSTEP1:%d\n", FinalStep1);
                 printf("FINALSTEP2:%d\n", FinalStep2);
-                printf("FINALSTEP3:%d\n", FinalStep3);
+                printf("FINALSTEP3:%d\n", FinalStep3);*/
                 return;
-            }        
+            }         
         }
         }
     }
+
+    void testsynchro(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+            while(1){
+            if (gpio_get_level(opto0) == 1){
+                driver0.set_speed(0);
+                vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+                printf("opto opto0Stop\n");
+            }
+            if (gpio_get_level(opto1) == 1){
+                driver1.set_speed(0);
+                vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+                printf("opto opto1Stop\n");
+            }
+            if (gpio_get_level(opto2) == 1){
+                driver2.set_speed(0);
+                vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+                printf("opto opto2Stop\n");
+            }
+            if (gpio_get_level(opto3) == 1){
+                driver3.set_speed(0);
+                vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+                printf("opto opto3Stop\n");
+            }
+
+            if((gpio_get_level(opto0) == 1) && (gpio_get_level(opto1) == 1) && (gpio_get_level(opto2) == 1) && (gpio_get_level(opto3) == 1)) 
+            {   
+                driver0.set_speed(0);
+                vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+                driver1.set_speed(0);
+                vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+                driver2.set_speed(0);
+                vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+                driver3.set_speed(0);
+                vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+                printf("return optoStop\n");
+                return;
+            }
+            vTaskDelay(5/portTICK_PERIOD_MS); 
+            }
+    }
+
     void moveMotor(int steps, int dir, Driver driver){   
          //dir can be just 1 or -1 to express direction of moving
         //PCNT UNIT //NELZE DAT DO PCNT.HPP
@@ -288,15 +329,21 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
     void pushBack(Driver driver, int dir, int pushSteps){
     moveMotor(50, -1, driver);
     }
+   
     void synchronizeMotor(Driver driver, gpio_num_t opto, int direction){
     driver.set_speed(motor_speed * direction);
-        while(1){
-            if(opto == 1){
-                driver.set_speed(0);
-                pushBack(driver, direction*(-1), 50);
-                return;
+        printf("opto level:2\n");
+        while(gpio_get_level(opto)!=1){
+            vTaskDelay(5/portTICK_PERIOD_MS);
+
             }
+            printf("opto level:%d\n",gpio_get_level(opto));
+            if(gpio_get_level(opto) == 1){
+                driver.set_speed(0);
+                //pushBack(driver, direction*(-1), 50);
+                return; //break
         }
+
     }
     void synchronizeAllMotors(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opro1, gpio_num_t opro2, gpio_num_t opro3){
         synchronizeMotor(driver0, opto0, 1);
@@ -336,7 +383,7 @@ extern "C" void app_main(void)
     gpio_set_level(VCC_IO_2, 1);
     gpio_set_level(VCC_IO_3, 1);
     nvs_init();                             //inicializace pro zápis do flash paměti
-    initGridUi();
+    //initGridUi();
     Uart drivers_uart {
         DRIVERS_UART,
         Uart::config_t {
@@ -382,16 +429,26 @@ extern "C" void app_main(void)
 
 
 
+    
+    printf("opto level begin\n");
+
+
+    driver0.set_speed(motor_speed1*(-1));
+    driver1.set_speed(motor_speed2*(-1));
+    driver2.set_speed(motor_speed);
+    driver3.set_speed(motor_speed);
+    
+    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    vTaskDelay(500/portTICK_PERIOD_MS);
+
+    //synchronizeMotor(driver0, opto0, 1);
+    //checkOptos();
+
     IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_1, GPIO_NUM_18, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
-
-    checkOptos();
-    //movePosition(0, 0, 0, 0, 1, 1, 1, 1, driver0, driver1, driver2, driver3);
+    movePosition(100, 100, 100, 100, 1, 1, -1, -1, driver0, driver1, driver2, driver3);
     return;
    
 }
-
-
-
