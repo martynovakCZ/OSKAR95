@@ -124,10 +124,10 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
     driver.set_IHOLD_IRUN (iRun, iHold);             //proud IHOLD =0, IRUN = 8/32 (při stání je motor volně otočný)
 }
 
-
     void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps,int dir0, int dir1, int dir2, int dir3, Driver driver0, Driver driver1, Driver driver2, Driver driver3){
             //dir can be just 1 or -1 to express direction of moving
             //PCNT UNIT //NELZE DAT DO PCNT.HPP
+        
         pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
         pcnt_evt_t evt;
         portBASE_TYPE res;
@@ -156,7 +156,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
             printf("Event PCNT unit[%d]; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);*/
 
             if (evt.status & PCNT_STATUS_H_LIM_M) {
-                printf("H_LIM EVT\n");
+                //printf("H_LIM EVT\n");
                 switch(evt.unit) {
                     case 0:
                         FinalStep0 ++;
@@ -226,6 +226,12 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
     void testsynchro(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
             while(1){
+
+            driver0.set_speed(motor_speed1);
+            driver1.set_speed(motor_speed2);
+            driver2.set_speed(motor_speed*(-1));
+            driver3.set_speed(motor_speed*(-1));
+            
             if (gpio_get_level(opto0) == 1){
                 driver0.set_speed(0);
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
@@ -258,10 +264,96 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                 driver3.set_speed(0);
                 vTaskDelay(motor_delay/portTICK_PERIOD_MS);
                 printf("return optoStop\n");
+                //movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
                 return;
             }
             vTaskDelay(5/portTICK_PERIOD_MS); 
             }
+    }
+    
+    void count_position_from_synchro(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+            
+            pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
+            pcnt_evt_t evt;
+            portBASE_TYPE res;
+
+            driver0.set_speed(motor_speed1);
+            driver1.set_speed(motor_speed2);
+            driver2.set_speed(motor_speed*(-1));
+            driver3.set_speed(motor_speed*(-1));
+
+           /* int motor0=0;
+            int motor1=0;
+            int motor2=0;
+            int motor3=0;*/
+            
+            while(1){
+
+                res = xQueueReceive(pcnt_evt_queue, &evt, 0 / portTICK_PERIOD_MS);
+                if (res == pdTRUE) {
+                /* pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
+                    pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
+                    pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
+                    pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
+
+                    printf("Event PCNT unit[%d]; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);*/
+
+                    if (evt.status & PCNT_STATUS_H_LIM_M) {
+                        //printf("H_LIM EVT\n");
+                        switch(evt.unit) {
+                            case 0:
+                                motor0 ++;
+                                break;
+                            case 1:
+                                motor1 ++;
+                                break;
+                            case 2:
+                                motor2 ++;
+                                break;
+                            case 3:
+                                motor3 ++;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                } else {
+                        
+                        if (gpio_get_level(opto0) == 1){
+                            driver0.set_speed(0);
+                            printf("opto opto0Stop\n");
+                        }
+                        if (gpio_get_level(opto1) == 1){
+                            driver1.set_speed(0);
+                            printf("opto opto1Stop\n");
+                        }
+                        if (gpio_get_level(opto2) == 1){
+                            driver2.set_speed(0);
+                            printf("opto opto2Stop\n");
+                        }
+                        if (gpio_get_level(opto3) == 1){
+                            driver3.set_speed(0);
+                            printf("opto opto3Stop\n");
+                        }
+
+                        if((gpio_get_level(opto0) == 1) && (gpio_get_level(opto1) == 1) && (gpio_get_level(opto2) == 1) && (gpio_get_level(opto3) == 1)) 
+                        {   
+                            driver0.set_speed(0);
+                            driver1.set_speed(0);
+                            driver2.set_speed(0);
+                            driver3.set_speed(0);
+                            printf("return optoStop\n");                            
+                            printf("motor0: %d\n", motor0);                            
+                            printf("motor1: %d\n", motor1);                            
+                            printf("motor2: %d\n", motor2);                            
+                            printf("motor3: %d\n", motor3);                            
+                           
+
+                            //movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
+                            return;
+                        }
+                    }
+    }
     }
 
     void moveMotor(int steps, int dir, Driver driver){   
@@ -286,7 +378,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
             printf("Event PCNT unit[%d]; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);*/
 
             if (evt.status & PCNT_STATUS_H_LIM_M) {
-                printf("H_LIM EVT\n");
+                //printf("H_LIM EVT\n");
                 switch(evt.unit) {
                     case 0:
                         currentSteps ++;
@@ -433,31 +525,24 @@ extern "C" void app_main(void)
     printf("opto level begin\n");
 
 
-    driver0.set_speed(motor_speed1);
-    driver1.set_speed(motor_speed2);
-    driver2.set_speed(motor_speed*(-1));
-    driver3.set_speed(motor_speed*(-1));
-
-    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
-    vTaskDelay(500/portTICK_PERIOD_MS);
+   /* testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    vTaskDelay(500/portTICK_PERIOD_MS);*/
 
 
-    IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0);
+    IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0); //testsynchro must be before this init
     IndexStepCounter_init(PCNT_UNIT_1, GPIO_NUM_18, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
 
-    movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
-    vTaskDelay(500/portTICK_PERIOD_MS);
-    
-    driver0.set_speed(motor_speed1);
-    driver1.set_speed(motor_speed2);
-    driver2.set_speed(motor_speed*(-1));
-    driver3.set_speed(motor_speed*(-1));
+    count_position_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    movePosition(motor0, motor1, motor2, motor3, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
 
-    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+   // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
+   // vTaskDelay(500/portTICK_PERIOD_MS);
+
+   /* testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
-    vTaskDelay(500/portTICK_PERIOD_MS);
+    vTaskDelay(500/portTICK_PERIOD_MS);*/
 
     //synchronizeMotor(driver0, opto0, 1);
 /*while(1){

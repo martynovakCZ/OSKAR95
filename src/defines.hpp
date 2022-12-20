@@ -72,3 +72,8 @@ volatile int FinalStep1=0;
 volatile int FinalStep2=0; 
 volatile int FinalStep3=0; 
 
+            int motor0=0;
+            int motor1=0;
+            int motor2=0;
+            int motor3=0;
+
