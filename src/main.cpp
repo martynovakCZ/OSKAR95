@@ -441,16 +441,36 @@ extern "C" void app_main(void)
     testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     vTaskDelay(500/portTICK_PERIOD_MS);
 
-    //synchronizeMotor(driver0, opto0, 1);
 
     IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_1, GPIO_NUM_18, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
+
     movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
     vTaskDelay(500/portTICK_PERIOD_MS);
-    movePosition(35*360, 5*360, 36*0, 12*360, -1, -1, 1, 1, driver0, driver1, driver2, driver3); // maximalni stupne: 40, 5, 36, 12 // podstava, klepeta, loket, rameno // -1 od opto, -1 od opto, 1 od opto, 1 od opto
+    
+    driver0.set_speed(motor_speed1);
+    driver1.set_speed(motor_speed2);
+    driver2.set_speed(motor_speed*(-1));
+    driver3.set_speed(motor_speed*(-1));
 
-    return;
+    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
+    vTaskDelay(500/portTICK_PERIOD_MS);
+
+    //synchronizeMotor(driver0, opto0, 1);
+/*while(1){
+
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    movePosition(27*360, 2*360, 36*0, 6*360, -1, -1, 1, 1, driver0, driver1, driver2, driver3); // maximalni stupne: 40, 5, 36, 12 // podstava, klepeta, loket, rameno // -1 od opto, -1 od opto, 1 od opto, 1 od opto
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    movePosition(10*360, 1*360, 10*360, 3*360, 1, -1, 1, -1, driver0, driver1, driver2, driver3); // maximalni stupne: 40, 5, 36, 12 // podstava, klepeta, loket, rameno // -1 od opto, -1 od opto, 1 od opto, 1 od opto
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    movePosition(10*360, 3*360, 5*360, 5*360, 1, 1, -1, 1, driver0, driver1, driver2, driver3); // maximalni stupne: 40, 5, 36, 12 // podstava, klepeta, loket, rameno // -1 od opto, -1 od opto, 1 od opto, 1 od opto
+    vTaskDelay(500/portTICK_PERIOD_MS);
+    movePosition(7*360, 5*360, 5*360, 8*360, 1, -1, 1, -1, driver0, driver1, driver2, driver3); // maximalni stupne: 40, 5, 36, 12 // podstava, klepeta, loket, rameno // -1 od opto, -1 od opto, 1 od opto, 1 od opto
+}
+    return;*/
    
 }
