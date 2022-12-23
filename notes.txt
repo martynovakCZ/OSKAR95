@@ -1,0 +1,5 @@
+udělat přes gridUI applikaci, ve které budou režimy:
+-manuální ovládání
+    -4 popsané slidery pro pohyb každého motoru
+-autonomní
+    -režim zadávání: manuálně najede na pozici, zapíše ji jako projetý bod

@@ -271,7 +271,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
             }
     }
     
-    void count_position_from_synchro(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+    void count_positions_from_synchro(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
             
             pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
             pcnt_evt_t evt;
@@ -351,6 +351,61 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
                             //movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
                             return;
+                        }
+                    }
+    }
+    }
+    void count_position_from_synchro(Driver driver, gpio_num_t opto){
+            
+            pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
+            pcnt_evt_t evt;
+            portBASE_TYPE res;
+            switch (opto){
+                case opto0:
+                    driver.set_speed(motor_speed1);
+                    break;
+                case opto1:
+                    driver.set_speed(motor_speed2);
+                    break;
+                case opto2:
+                    driver.set_speed(motor_speed*(-1));
+                    break;
+                case opto3:
+                    driver.set_speed(motor_speed*(-1));
+                    break;
+                default:
+                    break;
+            }
+
+            int motor=0;
+
+           /* int motor0=0;
+            int motor1=0;
+            int motor2=0;
+            int motor3=0;*/
+            
+            while(1){
+
+                res = xQueueReceive(pcnt_evt_queue, &evt, 0 / portTICK_PERIOD_MS);
+                if (res == pdTRUE) {
+                /* pcnt_get_counter_value(PCNT_UNIT_0, &pcnt0_count);
+                    pcnt_get_counter_value(PCNT_UNIT_1, &pcnt1_count);
+                    pcnt_get_counter_value(PCNT_UNIT_2, &pcnt2_count);
+                    pcnt_get_counter_value(PCNT_UNIT_3, &pcnt3_count);
+
+                    printf("Event PCNT unit[%d]; cnt0: %d; cnt1: %d; cnt2: %d; cnt3: %d\n", evt.unit, pcnt0_count, pcnt1_count, pcnt2_count, pcnt3_count);*/
+
+                    if (evt.status & PCNT_STATUS_H_LIM_M) {
+                        //printf("H_LIM EVT\n");
+
+                        motor++;
+                    }
+                } else {
+                        
+                        if (gpio_get_level(opto) == 1){
+                            driver.set_speed(0);
+                            printf("opto optoStop\n");
+                            printf("motor: %d\n", motor);                            
                         }
                     }
     }
@@ -534,7 +589,7 @@ extern "C" void app_main(void)
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
 
-    count_position_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    count_positions_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     movePosition(motor0, motor1, motor2, motor3, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
 
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
