@@ -96,48 +96,72 @@ static void initGridUi() {
         printf("svalule:%f ; motorspeed4:%d",s.value(), motor_speed4);
     });*/
 
-        builder.RucniRizeni([](Button &s){
+        builder.RucniRizeni.onRelease([](Button &s){
 
     });
-        builder.ZadavaniTrasy([](Button &s){
+        builder.ZadavaniTrasy.onRelease([](Button &s){
 
     });
-        builder.PridatBod([](Button &s){
+        builder.PridatBod.onRelease([](Button &s){
 
     });
-        builder.SpustitTrasu([](Button &s){
+        builder.SpustitTrasu.onRelease([](Button &s){
 
     });
-        builder.CyklovatTrasu([](Button &s){
+        builder.CyklovatTrasu.onRelease([](Button &s){
 
     });
-        builder.Synchronize([](Button &s){
+        builder.Synchronize.onRelease([](Button &s){
 
     });
 
 
-        builder.KlestePlus([](Button &s){
+        builder.KlestePlus.onPress([](Button &s){
 
     });
-        builder.KlesteMinus([](Button &s){
+        builder.KlestePlus.onRelease([](Button &s){
 
     });
-        builder.LoketPlus([](Button &s){
+        builder.KlesteMinus.onPress([](Button &s){
 
     });
-        builder.LoketMinus([](Button &s){
+        builder.KlesteMinus.onRelease([](Button &s){
 
     });
-        builder.RamenoPlus([](Button &s){
+        builder.LoketPlus.onPress([](Button &s){
 
     });
-        builder.RamenoMinus([](Button &s){
+        builder.LoketPlus.onRelease([](Button &s){
 
     });
-        builder.PodstavaPlus([](Button &s){
+        builder.LoketMinus.onPress([](Button &s){
 
     });
-        builder.PodstavaMinus([](Button &s){
+        builder.LoketMinus.onRelease([](Button &s){
+
+    });
+        builder.RamenoPlus.onPress([](Button &s){
+
+    });
+        builder.RamenoPlus.onRelease([](Button &s){
+
+    });
+        builder.RamenoMinus.onPress([](Button &s){
+
+    });
+        builder.RamenoMinus.onRelease([](Button &s){
+
+    });
+        builder.PodstavaPlus.onPress([](Button &s){
+
+    });
+        builder.PodstavaPlus.onRelease([](Button &s){
+
+    });
+        builder.PodstavaMinus.onPress([](Button &s){
+
+    });
+        builder.PodstavaMinus.onRelease([](Button &s){
 
     });
 
