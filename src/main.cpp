@@ -98,71 +98,94 @@ static void initGridUi() {
 
         builder.RucniRizeni.onRelease([](Button &s){   
             printf("RucniRizeni.onRelease \n");
+            rucniRizeni_onRelease = true;
+
     });
         builder.ZadavaniTrasy.onRelease([](Button &s){
             printf("ZadavaniTrasy.onRelease \n");
+            zadavaniTrasy_onRelease = true;
     });
         builder.PridatBod.onRelease([](Button &s){
             printf("PridatBod.onRelease \n");
+            pridatBod_onRelease = true;
     });
         builder.SpustitTrasu.onRelease([](Button &s){
             printf("SpustitTrasu.onRelease \n");
+            spustitTrasu_onRelease = true;
     });
         builder.CyklovatTrasu.onRelease([](Button &s){
             printf("CyklovatTrasu.onRelease \n");
+            cyklovatTrasu_onRelease = true;
     });
         builder.Synchronize.onRelease([](Button &s){
             printf("Synchronize.onRelease \n");
+            synchronize_onRelease = true;
     }); 
 
 
         builder.KlestePlus.onPress([](Button &s){
             printf("KlestePlus.onPress \n");
+            klestePlus_onPress = true;
     });
         builder.KlestePlus.onRelease([](Button &s){
             printf("KlestePlus.onRelease \n");
+            klestePlus_onRelease = true;
     });
         builder.KlesteMinus.onPress([](Button &s){
             printf("KlesteMinus.onPress \n");
+            klesteMinus_onPress = true;
     });
         builder.KlesteMinus.onRelease([](Button &s){
             printf("RucniRizeni.onRelease \n");
+            klesteMinus_onRelease = true;
     });
        builder.LoketPlus.onPress([](Button &s){
             printf("KlesteMinus.onRelease \n");
+            loketPlus_onPress = true;
     });
         builder.LoketPlus.onRelease([](Button &s){
             printf("LoketPlus.onRelease \n");
+            loketPlus_onRelease = true;
     });
         builder.LoketMinus.onPress([](Button &s){
             printf("LoketMinus.onPress \n");
+            loketMinus_onPress = true;
     });
         builder.LoketMinus.onRelease([](Button &s){
             printf("LoketMinus.onRelease \n");
+            loketMinus_onPress = true;
     });
         builder.RamenoPlus.onPress([](Button &s){
             printf("RamenoPlus.onPress \n");
+            ramenoPlus_onPress = true;
     });
         builder.RamenoPlus.onRelease([](Button &s){
             printf("RucniRizeni.onRelease \n");
+            ramenoPlus_onRelease = true;
     });
         builder.RamenoMinus.onPress([](Button &s){
             printf("RamenoMinus.onPress \n");
+            ramenoMinus_onPress = true;
     });
         builder.RamenoMinus.onRelease([](Button &s){
             printf("RamenoMinus.onRelease \n");
+            ramenoMinus_onRelease = true;
     });
         builder.PodstavaPlus.onPress([](Button &s){
             printf("PodstavaPlus.onPress \n");
+            podstavaPlus_onPress = true;
     });
         builder.PodstavaPlus.onRelease([](Button &s){
             printf("PodstavaPlus.onRelease \n");
+            podstavaPlus_onRelease = true;
     });
         builder.PodstavaMinus.onPress([](Button &s){
             printf("PodstavaMinus.onPress \n");
+            podstavaMinus_onPress = true;
     });
         builder.PodstavaMinus.onRelease([](Button &s){
             printf("PodstavaMinus.onRelease \n");
+            podstavaMinus_onRelease = true;
     });
 
 
@@ -296,12 +319,12 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
     }
 
     void testsynchro(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
-            while(1){
-
             driver0.set_speed(motor_speed1);
             driver1.set_speed(motor_speed2);
             driver2.set_speed(motor_speed*(-1));
             driver3.set_speed(motor_speed*(-1));
+            while(1){
+
             
             if (gpio_get_level(opto0) == 1){
                 driver0.set_speed(0);
@@ -338,7 +361,6 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                 //movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
                 return;
             }
-            vTaskDelay(5/portTICK_PERIOD_MS); 
             }
     }
     
@@ -601,7 +623,6 @@ extern "C" void app_main(void)
     gpio_set_level(VCC_IO_2, 1);
     gpio_set_level(VCC_IO_3, 1);
     nvs_init();                             //inicializace pro zápis do flash paměti
-    initGridUi();
     Uart drivers_uart {
         DRIVERS_UART,
         Uart::config_t {
@@ -642,6 +663,7 @@ extern "C" void app_main(void)
 
 
 
+    initGridUi();
 
 
 
@@ -651,8 +673,7 @@ extern "C" void app_main(void)
     printf("opto level begin\n");
 
 
-   /* testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
-    vTaskDelay(500/portTICK_PERIOD_MS);*/
+    
 
 
     IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0); //testsynchro must be before this init
@@ -662,6 +683,11 @@ extern "C" void app_main(void)
 
     count_positions_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     movePosition(motor0, motor1, motor2, motor3, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
+    
+    
+    while(1){
+        if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
+    }
 
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
    // vTaskDelay(500/portTICK_PERIOD_MS);
