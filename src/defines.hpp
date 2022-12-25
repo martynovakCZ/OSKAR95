@@ -77,3 +77,26 @@ volatile int FinalStep3=0;
             int motor2=0;
             int motor3=0;
 
+volatile bool rucniRizeni_onRelease = false;
+volatile bool zadavaniTrasy_onRelease = false;
+volatile bool pridatBod_onRelease = false;
+volatile bool spustitTrasu_onRelease = false;
+volatile bool cyklovatTrasu_onRelease = false;
+volatile bool synchronize_onRelease = false;
+volatile bool klestePlus_onPress = false;
+volatile bool klestePlus_onRelease = false;
+volatile bool klesteMinus_onPress = false;
+volatile bool klesteMinus_onRelease = false;
+volatile bool loketPlus_onPress = false;
+volatile bool loketPlus_onRelease = false;
+volatile bool loketMinus_onPress = false;
+volatile bool loketMinus_onRelease = false;
+volatile bool ramenoPlus_onPress = false;
+volatile bool ramenoPlus_onRelease = false;
+volatile bool ramenoMinus_onPress = false;
+volatile bool ramenoMinus_onRelease = false;
+volatile bool podstavaPlus_onPress = false;
+volatile bool podstavaPlus_onRelease = false;
+volatile bool podstavaMinus_onPress = false;
+volatile bool podstavaMinus_onRelease = false;
+
