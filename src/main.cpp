@@ -58,6 +58,8 @@ static void initGridUi() {
         printf("cau\n");
     });
 
+
+
     builder.StartStopButton.onRelease([](Button &s){
         start_stop = false;
         printf("ahoj\n");
@@ -75,7 +77,7 @@ static void initGridUi() {
     builder.IRun.onChanged([](Slider &s) {
         i_run = int(s.value());
         printf("I_Run / 32:%f -> %d\n",s.value(), i_run);
-    });*/
+    });
 
         builder.Slider1.onChanged([](Slider &s) {
         motor_speed1 = MOTOR_SPEED_COEFICIENT * s.value();
@@ -92,6 +94,51 @@ static void initGridUi() {
         builder.Slider4.onChanged([](Slider &s) {
         motor_speed4 = MOTOR_SPEED_COEFICIENT * s.value();
         printf("svalule:%f ; motorspeed4:%d",s.value(), motor_speed4);
+    });*/
+
+        builder.RucniRizeni([](Button &s){
+
+    });
+        builder.ZadavaniTrasy([](Button &s){
+
+    });
+        builder.PridatBod([](Button &s){
+
+    });
+        builder.SpustitTrasu([](Button &s){
+
+    });
+        builder.CyklovatTrasu([](Button &s){
+
+    });
+        builder.Synchronize([](Button &s){
+
+    });
+
+
+        builder.KlestePlus([](Button &s){
+
+    });
+        builder.KlesteMinus([](Button &s){
+
+    });
+        builder.LoketPlus([](Button &s){
+
+    });
+        builder.LoketMinus([](Button &s){
+
+    });
+        builder.RamenoPlus([](Button &s){
+
+    });
+        builder.RamenoMinus([](Button &s){
+
+    });
+        builder.PodstavaPlus([](Button &s){
+
+    });
+        builder.PodstavaMinus([](Button &s){
+
     });
 
 
