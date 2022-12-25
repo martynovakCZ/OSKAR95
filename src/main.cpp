@@ -96,73 +96,73 @@ static void initGridUi() {
         printf("svalule:%f ; motorspeed4:%d",s.value(), motor_speed4);
     });*/
 
-        builder.RucniRizeni.onRelease([](Button &s){
-
+        builder.RucniRizeni.onRelease([](Button &s){   
+            printf("RucniRizeni.onRelease \n");
     });
         builder.ZadavaniTrasy.onRelease([](Button &s){
-
+            printf("ZadavaniTrasy.onRelease \n");
     });
         builder.PridatBod.onRelease([](Button &s){
-
+            printf("PridatBod.onRelease \n");
     });
         builder.SpustitTrasu.onRelease([](Button &s){
-
+            printf("SpustitTrasu.onRelease \n");
     });
         builder.CyklovatTrasu.onRelease([](Button &s){
-
+            printf("CyklovatTrasu.onRelease \n");
     });
         builder.Synchronize.onRelease([](Button &s){
-
-    });
+            printf("Synchronize.onRelease \n");
+    }); 
 
 
         builder.KlestePlus.onPress([](Button &s){
-
+            printf("KlestePlus.onPress \n");
     });
         builder.KlestePlus.onRelease([](Button &s){
-
+            printf("KlestePlus.onRelease \n");
     });
         builder.KlesteMinus.onPress([](Button &s){
-
+            printf("KlesteMinus.onPress \n");
     });
         builder.KlesteMinus.onRelease([](Button &s){
-
+            printf("RucniRizeni.onRelease \n");
     });
-        builder.LoketPlus.onPress([](Button &s){
-
+       builder.LoketPlus.onPress([](Button &s){
+            printf("KlesteMinus.onRelease \n");
     });
         builder.LoketPlus.onRelease([](Button &s){
-
+            printf("LoketPlus.onRelease \n");
     });
         builder.LoketMinus.onPress([](Button &s){
-
+            printf("LoketMinus.onPress \n");
     });
         builder.LoketMinus.onRelease([](Button &s){
-
+            printf("LoketMinus.onRelease \n");
     });
         builder.RamenoPlus.onPress([](Button &s){
-
+            printf("RamenoPlus.onPress \n");
     });
         builder.RamenoPlus.onRelease([](Button &s){
-
+            printf("RucniRizeni.onRelease \n");
     });
         builder.RamenoMinus.onPress([](Button &s){
-
+            printf("RamenoMinus.onPress \n");
     });
         builder.RamenoMinus.onRelease([](Button &s){
-
+            printf("RamenoMinus.onRelease \n");
     });
         builder.PodstavaPlus.onPress([](Button &s){
-
+            printf("PodstavaPlus.onPress \n");
     });
         builder.PodstavaPlus.onRelease([](Button &s){
-
+            printf("PodstavaPlus.onRelease \n");
     });
         builder.PodstavaMinus.onPress([](Button &s){
-
+            printf("PodstavaMinus.onPress \n");
     });
         builder.PodstavaMinus.onRelease([](Button &s){
-
+            printf("PodstavaMinus.onRelease \n");
     });
 
 
@@ -392,19 +392,19 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                         
                         if (gpio_get_level(opto0) == 1){
                             driver0.set_speed(0);
-                            printf("opto opto0Stop\n");
+                            //printf("opto opto0Stop\n");
                         }
                         if (gpio_get_level(opto1) == 1){
                             driver1.set_speed(0);
-                            printf("opto opto1Stop\n");
+                            //printf("opto opto1Stop\n");
                         }
                         if (gpio_get_level(opto2) == 1){
                             driver2.set_speed(0);
-                            printf("opto opto2Stop\n");
+                            //printf("opto opto2Stop\n");
                         }
                         if (gpio_get_level(opto3) == 1){
                             driver3.set_speed(0);
-                            printf("opto opto3Stop\n");
+                            //printf("opto opto3Stop\n");
                         }
 
                         if((gpio_get_level(opto0) == 1) && (gpio_get_level(opto1) == 1) && (gpio_get_level(opto2) == 1) && (gpio_get_level(opto3) == 1)) 
@@ -601,7 +601,7 @@ extern "C" void app_main(void)
     gpio_set_level(VCC_IO_2, 1);
     gpio_set_level(VCC_IO_3, 1);
     nvs_init();                             //inicializace pro zápis do flash paměti
-    //initGridUi();
+    initGridUi();
     Uart drivers_uart {
         DRIVERS_UART,
         Uart::config_t {
