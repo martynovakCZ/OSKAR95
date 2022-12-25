@@ -169,9 +169,7 @@ public:
         return builder::_LayoutBuilder();
     }
 
-    void changeTab (uint16_t index) {
-        UI.changeTab(index);
-    }
+
 
     Text Text1;
     Button RucniRizeni;
