@@ -1,4 +1,5 @@
 #define GRIDUI_LAYOUT_DEFINITION
+#include "vector"
 #include "layout.hpp"           //  pro grafické rozhraní
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
@@ -592,7 +593,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         synchronizeMotor(driver3, opto3, -1);
     }
    
-    
+   
 
 
 extern "C" void app_main(void)
@@ -684,11 +685,12 @@ extern "C" void app_main(void)
     count_positions_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     movePosition(motor0, motor1, motor2, motor3, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
     
-    
+
     while(1){
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
-    }
 
+    }
+ 
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
    // vTaskDelay(500/portTICK_PERIOD_MS);
 
