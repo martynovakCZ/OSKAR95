@@ -154,7 +154,7 @@ static void initGridUi() {
     });
         builder.LoketMinus.onRelease([](Button &s){
             printf("LoketMinus.onRelease \n");
-            loketMinus_onPress = true;
+            loketMinus_onRelease = true;
     });
         builder.RamenoPlus.onPress([](Button &s){
             printf("RamenoPlus.onPress \n");
@@ -593,7 +593,34 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         synchronizeMotor(driver3, opto3, -1);
     }
    
-   
+   void realTimeControl(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+    while(1){
+        //printf("realTimeControl while\n");
+        if(klestePlus_onPress == true){  printf("KKK ON\n");driver1.set_speed(motor_speed1); klestePlus_onPress = false;}
+        if(klestePlus_onRelease == true){    driver1.set_speed(0); klestePlus_onRelease = false;}
+        if(klesteMinus_onPress == true){  driver1.set_speed(motor_speed1*(-1)); klesteMinus_onPress = false;}
+        if(klesteMinus_onRelease == true){    driver1.set_speed(0); klesteMinus_onRelease = false;}
+
+        if(ramenoPlus_onPress == true){  driver3.set_speed(motor_speed3); ramenoPlus_onPress = false;}
+        if(ramenoPlus_onRelease == true){    driver3.set_speed(0); ramenoPlus_onRelease = false;}
+        if(ramenoMinus_onPress == true){  driver3.set_speed(motor_speed3*(-1)); ramenoMinus_onPress = false;}
+        if(ramenoMinus_onRelease == true){    driver3.set_speed(0); ramenoMinus_onRelease = false;}
+
+        if(podstavaPlus_onPress == true){  driver0.set_speed(motor_speed0); podstavaPlus_onPress = false;}
+        if(podstavaPlus_onRelease == true){    driver0.set_speed(0); podstavaPlus_onRelease = false;}
+        if(podstavaMinus_onPress == true){  driver0.set_speed(motor_speed0*(-1)); podstavaMinus_onPress = false;}
+        if(podstavaMinus_onRelease == true){    driver0.set_speed(0); podstavaMinus_onRelease  = false;}
+
+        if(loketPlus_onPress == true){  driver2.set_speed(motor_speed2); loketPlus_onPress = false;}
+        if(loketPlus_onRelease == true){    driver2.set_speed(0); loketPlus_onRelease = false;}
+        if(loketMinus_onPress == true){  driver2.set_speed(motor_speed2*(-1)); loketMinus_onPress = false;}
+        if(loketMinus_onRelease == true){    driver2.set_speed(0); loketMinus_onRelease = false;}
+
+        if(zadavaniTrasy_onRelease==1){ zadavaniTrasy_onRelease = false; return;}
+
+        vTaskDelay(50/portTICK_PERIOD_MS);
+    }    
+   }
 
 
 extern "C" void app_main(void)
@@ -688,7 +715,8 @@ extern "C" void app_main(void)
 
     while(1){
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
-
+        if (rucniRizeni_onRelease == 1) {realTimeControl(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); rucniRizeni_onRelease = false;}
+        vTaskDelay(50/portTICK_PERIOD_MS);
     }
  
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
