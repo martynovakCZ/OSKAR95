@@ -8,3 +8,6 @@ udělat přes gridUI applikaci, ve které budou režimy:
 
 FinalStep0, 1, 2, 3 by mohl byt az primo ve funkci
 motor0, 1, 2, 3 by mohl byt az primo ve funkci
+
+OPRAVIT ABY SE PRI ONRELEASE NASTAVILO ONPRESS NA false
+OPRAVIT ABY SE PRI ONRELEASE PO AKCI NASTAVILO NA FALSE
