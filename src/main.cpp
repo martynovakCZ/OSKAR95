@@ -600,6 +600,11 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         int stepsDriver2=0;
         int stepsDriver3=0;
 
+        bool reverseDriver0=0;
+        bool reverseDriver1=0;
+        bool reverseDriver2=0;
+        bool reverseDriver3=0;
+
         pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
         pcnt_evt_t evt;
         portBASE_TYPE res;
@@ -612,7 +617,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                     if (evt.status & PCNT_STATUS_H_LIM_M) {
                         switch(evt.unit) {
                             case 0:
-                                if(){
+                                if(reverseDriver0 == false){
                                     stepsDriver0++;
                                 }
                                 else{
@@ -620,7 +625,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                                 }
                                 break;
                             case 1:
-                                if(){
+                                if(reverseDriver1 == false){
                                     stepsDriver1++;
                                 }
                                 else{
@@ -628,7 +633,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                                 }
                                 break;
                             case 2:
-                                if(){
+                                if(reverseDriver2 == false){
                                     stepsDriver2++;
                                 }
                                 else{
@@ -636,7 +641,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                                 }
                                 break;
                             case 3:
-                                if(){
+                                if(reverseDriver3 == false){
                                     stepsDriver3++;
                                 }
                                 else{
@@ -648,7 +653,38 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                         }
                     }
                 } else {
-                        
+                        if(podstavaPlus_onPress == true){  driver0.set_speed(motor_speed0); reverseDriver0 = true; podstavaPlus_onPress = false;}
+                        if(podstavaPlus_onRelease == true){    driver0.set_speed(0); podstavaPlus_onRelease = false;}
+                        if(podstavaMinus_onPress == true){  driver0.set_speed(motor_speed0*(-1)); reverseDriver0 = false; podstavaMinus_onPress = false;}
+                        if(podstavaMinus_onRelease == true){    driver0.set_speed(0); podstavaMinus_onRelease  = false;}
+
+                        if(klestePlus_onPress == true){  driver1.set_speed(motor_speed1); reverseDriver1 = true; klestePlus_onPress = false;}
+                        if(klestePlus_onRelease == true){    driver1.set_speed(0); klestePlus_onRelease = false;}
+                        if(klesteMinus_onPress == true){  driver1.set_speed(motor_speed1*(-1)); reverseDriver1 = false; klesteMinus_onPress = false;}
+                        if(klesteMinus_onRelease == true){    driver1.set_speed(0); klesteMinus_onRelease = false;}
+
+                        if(loketPlus_onPress == true){  driver2.set_speed(motor_speed2); reverseDriver2 = false; loketPlus_onPress = false;}
+                        if(loketPlus_onRelease == true){    driver2.set_speed(0); loketPlus_onRelease = false;}
+                        if(loketMinus_onPress == true){  driver2.set_speed(motor_speed2*(-1)); reverseDriver2 = true; loketMinus_onPress = false;}
+                        if(loketMinus_onRelease == true){    driver2.set_speed(0); loketMinus_onRelease = false;}
+
+                        if(ramenoPlus_onPress == true){  driver3.set_speed(motor_speed3); reverseDriver3 = false; ramenoPlus_onPress = false;}
+                        if(ramenoPlus_onRelease == true){    driver3.set_speed(0); ramenoPlus_onRelease = false;}
+                        if(ramenoMinus_onPress == true){  driver3.set_speed(motor_speed3*(-1)); reverseDriver3 = true; ramenoMinus_onPress = false;}
+                        if(ramenoMinus_onRelease == true){    driver3.set_speed(0); ramenoMinus_onRelease = false;}
+
+                        if (pridatBod_onRelease == true){
+
+                            
+
+
+                            pridatBod_onRelease = false;
+                        }
+
+                        if(rucniRizeni_onRelease==1){return;}
+
+                        vTaskDelay(50/portTICK_PERIOD_MS);
+
                     }
     }
 
@@ -748,6 +784,7 @@ extern "C" void app_main(void)
     while(1){
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
 
+        if (zadavaniTrasy_onRelease == 1) {makePoints(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); zadavaniTrasy_onRelease = false;}
     }
  
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
