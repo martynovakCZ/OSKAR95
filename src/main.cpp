@@ -688,6 +688,9 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                             pridatBod_onRelease = false;
                         }
 
+                        if(spustitTrasu_onRelease==1){return;}
+                        if(cyklovatTrasu_onRelease==1){return;}
+
                         if(rucniRizeni_onRelease==1){return;}
 
                         vTaskDelay(50/portTICK_PERIOD_MS);
@@ -792,6 +795,8 @@ extern "C" void app_main(void)
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
 
         if (zadavaniTrasy_onRelease == 1) {makePoints(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); zadavaniTrasy_onRelease = false;}
+
+        
     }
  
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
