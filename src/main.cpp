@@ -593,7 +593,66 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         synchronizeMotor(driver3, opto3, -1);
     }
    
-   
+   void makePoints(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+        testsynchro( driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3);
+        int stepsDriver0=0;
+        int stepsDriver1=0;
+        int stepsDriver2=0;
+        int stepsDriver3=0;
+
+        pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
+        pcnt_evt_t evt;
+        portBASE_TYPE res;
+
+        while(1){
+
+                res = xQueueReceive(pcnt_evt_queue, &evt, 0 / portTICK_PERIOD_MS);
+                if (res == pdTRUE) {
+
+                    if (evt.status & PCNT_STATUS_H_LIM_M) {
+                        switch(evt.unit) {
+                            case 0:
+                                if(){
+                                    stepsDriver0++;
+                                }
+                                else{
+                                    stepsDriver0--;
+                                }
+                                break;
+                            case 1:
+                                if(){
+                                    stepsDriver1++;
+                                }
+                                else{
+                                    stepsDriver1--;
+                                }
+                                break;
+                            case 2:
+                                if(){
+                                    stepsDriver2++;
+                                }
+                                else{
+                                    stepsDriver2--;
+                                }
+                                break;
+                            case 3:
+                                if(){
+                                    stepsDriver3++;
+                                }
+                                else{
+                                    stepsDriver3--;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                } else {
+                        
+                    }
+    }
+
+   }
 
 
 extern "C" void app_main(void)
