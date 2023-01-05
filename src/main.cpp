@@ -690,6 +690,24 @@ extern "C" void app_main(void)
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
 
     }
+    //poznámka jenom proto, abych vedel 
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
+    //9
  
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
    // vTaskDelay(500/portTICK_PERIOD_MS);
