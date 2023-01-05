@@ -675,8 +675,15 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
                         if (pridatBod_onRelease == true){
 
-                            
+                            Vdriver0.push_back(stepsDriver0);
+                            Vdriver1.push_back(stepsDriver1);
+                            Vdriver2.push_back(stepsDriver2);
+                            Vdriver3.push_back(stepsDriver3);
 
+                            stepsDriver0=0;
+                            stepsDriver1=0;
+                            stepsDriver2=0;
+                            stepsDriver3=0;
 
                             pridatBod_onRelease = false;
                         }
