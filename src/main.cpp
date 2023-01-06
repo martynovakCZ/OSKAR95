@@ -219,10 +219,20 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
     driver.set_IHOLD_IRUN (iRun, iHold);             //proud IHOLD =0, IRUN = 8/32 (při stání je motor volně otočný)
 }
 
-    void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps,int dir0, int dir1, int dir2, int dir3, Driver driver0, Driver driver1, Driver driver2, Driver driver3){
-            //dir can be just 1 or -1 to express direction of moving
+    void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps, Driver driver0, Driver driver1, Driver driver2, Driver driver3){
+            //dir is expressed by mathematical sign by driverXSteps
             //PCNT UNIT //NELZE DAT DO PCNT.HPP
         
+        int dir0=0; 
+        int dir1=0; 
+        int dir2=0; 
+        int dir3=0;
+
+        if (driver0Steps<0) {dir0=(-1); driver0Steps=driver0Steps*(-1);} else if (driver0Steps>0) {dir0=1;}
+        if (driver1Steps<0) {dir1=(-1); driver1Steps=driver1Steps*(-1);} else if (driver1Steps>0) {dir1=1;}
+        if (driver2Steps<0) {dir2=(-1); driver2Steps=driver2Steps*(-1);} else if (driver2Steps>0) {dir2=1;}
+        if (driver3Steps<0) {dir3=(-1); driver3Steps=driver3Steps*(-1);} else if (driver3Steps>0) {dir3=1;}
+
         pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
         pcnt_evt_t evt;
         portBASE_TYPE res;
@@ -623,6 +633,155 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
    }
 
 
+   void readPoints(){
+        printf("readPoints function\n");
+        for(int a = 0; a<=Vdriver0.size()-1; a++){
+            printf("%d. - %d    ", a, Vdriver0[a]);
+            vTaskDelay(50/portTICK_PERIOD_MS);
+        }
+        printf("\n");
+
+        for(int a = 0; a<=Vdriver1.size()-1; a++){
+            printf("%d. - %d    ", a, Vdriver1[a]);
+            vTaskDelay(50/portTICK_PERIOD_MS);
+        }
+        printf("\n");
+
+        for(int a = 0; a<=Vdriver2.size()-1; a++){
+            printf("%d. - %d    ", a, Vdriver2[a]);
+            vTaskDelay(50/portTICK_PERIOD_MS);
+        }
+        printf("\n");
+
+        for(int a = 0; a<=Vdriver3.size()-1; a++){
+            printf("%d. - %d    ", a, Vdriver3[a]);
+            vTaskDelay(50/portTICK_PERIOD_MS);
+        }
+        printf("\n");
+   }
+   
+   void makePoints(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+        testsynchro( driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3);
+        int stepsDriver0=0;
+        int stepsDriver1=0;
+        int stepsDriver2=0;
+        int stepsDriver3=0;
+
+        bool reverseDriver0=0;
+        bool reverseDriver1=0;
+        bool reverseDriver2=0;
+        bool reverseDriver3=0;
+
+        pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
+        pcnt_evt_t evt;
+        portBASE_TYPE res;
+
+        while(1){
+
+                res = xQueueReceive(pcnt_evt_queue, &evt, 0 / portTICK_PERIOD_MS);
+                if (res == pdTRUE) {
+
+                    if (evt.status & PCNT_STATUS_H_LIM_M) {
+                        switch(evt.unit) {
+                            case 0:
+                                if(reverseDriver0 == false){
+                                    stepsDriver0++;
+                                }
+                                else{
+                                    stepsDriver0--;
+                                }
+                                break;
+                            case 1:
+                                if(reverseDriver1 == false){
+                                    stepsDriver1++;
+                                }
+                                else{
+                                    stepsDriver1--;
+                                }
+                                break;
+                            case 2:
+                                if(reverseDriver2 == false){
+                                    stepsDriver2++;
+                                }
+                                else{
+                                    stepsDriver2--;
+                                }
+                                break;
+                            case 3:
+                                if(reverseDriver3 == false){
+                                    stepsDriver3++;
+                                }
+                                else{
+                                    stepsDriver3--;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                } else {
+                        if(podstavaPlus_onPress == true){  driver0.set_speed(motor_speed0); reverseDriver0 = false; podstavaPlus_onPress = false;}
+                        if(podstavaPlus_onRelease == true){    driver0.set_speed(0); podstavaPlus_onRelease = false;}
+                        if(podstavaMinus_onPress == true){  driver0.set_speed(motor_speed0*(-1)); reverseDriver0 = true; podstavaMinus_onPress = false;}
+                        if(podstavaMinus_onRelease == true){    driver0.set_speed(0); podstavaMinus_onRelease  = false;}
+
+                        if(klestePlus_onPress == true){  driver1.set_speed(motor_speed1); reverseDriver1 = true; klestePlus_onPress = false;}
+                        if(klestePlus_onRelease == true){    driver1.set_speed(0); klestePlus_onRelease = false;}
+                        if(klesteMinus_onPress == true){  driver1.set_speed(motor_speed1*(-1)); reverseDriver1 = false; klesteMinus_onPress = false;}
+                        if(klesteMinus_onRelease == true){    driver1.set_speed(0); klesteMinus_onRelease = false;}
+
+                        if(loketPlus_onPress == true){  driver2.set_speed(motor_speed2); reverseDriver2 = false; loketPlus_onPress = false;}
+                        if(loketPlus_onRelease == true){    driver2.set_speed(0); loketPlus_onRelease = false;}
+                        if(loketMinus_onPress == true){  driver2.set_speed(motor_speed2*(-1)); reverseDriver2 = true; loketMinus_onPress = false;}
+                        if(loketMinus_onRelease == true){    driver2.set_speed(0); loketMinus_onRelease = false;}
+
+                        if(ramenoPlus_onPress == true){  driver3.set_speed(motor_speed3); reverseDriver3 = false; ramenoPlus_onPress = false;}
+                        if(ramenoPlus_onRelease == true){    driver3.set_speed(0); ramenoPlus_onRelease = false;}
+                        if(ramenoMinus_onPress == true){  driver3.set_speed(motor_speed3*(-1)); reverseDriver3 = true; ramenoMinus_onPress = false;}
+                        if(ramenoMinus_onRelease == true){    driver3.set_speed(0); ramenoMinus_onRelease = false;}
+
+                        if (pridatBod_onRelease == true){
+
+                            Vdriver0.push_back(stepsDriver0);
+                            Vdriver1.push_back(stepsDriver1);
+                            Vdriver2.push_back(stepsDriver2);
+                            Vdriver3.push_back(stepsDriver3);
+
+                            stepsDriver0=0;
+                            stepsDriver1=0;
+                            stepsDriver2=0;
+                            stepsDriver3=0;
+
+                            pridatBod_onRelease = false;
+                        }
+
+
+                        if(spustitTrasu_onRelease==1){return;}
+                        if(cyklovatTrasu_onRelease==1){return;}
+
+                        if(rucniRizeni_onRelease==1){return;}
+
+                        vTaskDelay(50/portTICK_PERIOD_MS);
+
+                    }
+    }
+
+   }
+
+   void drivePointsOnce(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+    readPoints();
+    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    for (int i=0; i<= Vdriver0.size()-1; i++){
+        printf("Vdriver0:   %d\n", Vdriver0[i]);
+        printf("Vdriver1:   %d\n", Vdriver1[i]);
+        printf("Vdriver2:   %d\n", Vdriver2[i]);
+        printf("Vdriver3:   %d\n", Vdriver3[i]);
+        movePosition(Vdriver0[i], Vdriver1[i], Vdriver2[i], Vdriver3[i] ,driver0, driver1, driver2, driver3);
+    }
+   }
+
+   void drivePointsCycle(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){} 
+  
 extern "C" void app_main(void)
 {   
     gpio_config_t io_conf;
@@ -703,20 +862,27 @@ extern "C" void app_main(void)
 
     
 
+    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
 
     IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0); //testsynchro must be before this init
     IndexStepCounter_init(PCNT_UNIT_1, GPIO_NUM_18, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
 
-    count_positions_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
-    movePosition(motor0, motor1, motor2, motor3, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
+    //count_positions_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    //movePosition(motor0, motor1, motor2, motor3, driver0, driver1, driver2, driver3);
     
 
     while(1){
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
         if (rucniRizeni_onRelease == 1) {realTimeControl(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); rucniRizeni_onRelease = false;}
+
+        if (zadavaniTrasy_onRelease == 1) {makePoints(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); zadavaniTrasy_onRelease = false;}
+
+        if (spustitTrasu_onRelease == 1) {drivePointsOnce(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); spustitTrasu_onRelease = false;}
+
         vTaskDelay(50/portTICK_PERIOD_MS);
+
     }
     //poznámka jenom proto, abych vedel 
     //9
@@ -740,8 +906,7 @@ extern "C" void app_main(void)
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
    // vTaskDelay(500/portTICK_PERIOD_MS);
 
-   /* testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
-    movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
+    /*movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
     vTaskDelay(500/portTICK_PERIOD_MS);*/
 
     //synchronizeMotor(driver0, opto0, 1);
