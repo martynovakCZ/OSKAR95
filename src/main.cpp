@@ -592,6 +592,33 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         synchronizeMotor(driver2, opto2, -1);
         synchronizeMotor(driver3, opto3, -1);
     }
+
+
+   void readPoints(){
+        for(int a = 0; a<=Vdriver0.size()-1; a++){
+            printf("%d. - %d    ", a, Vdriver0[a]);
+            vTaskDelay(50/portTICK_PERIOD_MS);
+        }
+        printf("\n");
+
+        for(int a = 0; a<=Vdriver1.size()-1; a++){
+            printf("%d. - %d    ", a, Vdriver1[a]);
+            vTaskDelay(50/portTICK_PERIOD_MS);
+        }
+        printf("\n");
+
+        for(int a = 0; a<=Vdriver2.size()-1; a++){
+            printf("%d. - %d    ", a, Vdriver2[a]);
+            vTaskDelay(50/portTICK_PERIOD_MS);
+        }
+        printf("\n");
+
+        for(int a = 0; a<=Vdriver3.size()-1; a++){
+            printf("%d. - %d    ", a, Vdriver3[a]);
+            vTaskDelay(50/portTICK_PERIOD_MS);
+        }
+        printf("\n");
+   }
    
    void makePoints(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
         testsynchro( driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3);
@@ -688,7 +715,8 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                             pridatBod_onRelease = false;
                         }
 
-                        if(spustitTrasu_onRelease==1){return;}
+
+                        if(spustitTrasu_onRelease==1){readPoints(); spustitTrasu_onRelease = false;}//{return;}
                         if(cyklovatTrasu_onRelease==1){return;}
 
                         if(rucniRizeni_onRelease==1){return;}
@@ -700,7 +728,10 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
    }
 
+   void drivePointsOnce(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){}
 
+   void drivePointsCycle(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){} 
+  
 extern "C" void app_main(void)
 {   
     gpio_config_t io_conf;
@@ -796,7 +827,6 @@ extern "C" void app_main(void)
 
         if (zadavaniTrasy_onRelease == 1) {makePoints(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); zadavaniTrasy_onRelease = false;}
 
-        
     }
  
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
