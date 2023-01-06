@@ -219,10 +219,20 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
     driver.set_IHOLD_IRUN (iRun, iHold);             //proud IHOLD =0, IRUN = 8/32 (při stání je motor volně otočný)
 }
 
-    void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps,int dir0, int dir1, int dir2, int dir3, Driver driver0, Driver driver1, Driver driver2, Driver driver3){
-            //dir can be just 1 or -1 to express direction of moving
+    void movePosition(int driver0Steps, int driver1Steps, int driver2Steps, int driver3Steps, Driver driver0, Driver driver1, Driver driver2, Driver driver3){
+            //dir is expressed by mathematical sign by driverXSteps
             //PCNT UNIT //NELZE DAT DO PCNT.HPP
         
+        int dir0=0; 
+        int dir1=0; 
+        int dir2=0; 
+        int dir3=0;
+
+        if (driver0Steps<0) {dir0=(-1);} else if (driver0Steps>0) {dir0=1;}
+        if (driver1Steps<0) {dir1=(-1);} else if (driver1Steps>0) {dir1=1;}
+        if (driver2Steps<0) {dir2=(-1);} else if (driver2Steps>0) {dir2=1;}
+        if (driver3Steps<0) {dir3=(-1);} else if (driver3Steps>0) {dir3=1;}
+
         pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
         pcnt_evt_t evt;
         portBASE_TYPE res;
