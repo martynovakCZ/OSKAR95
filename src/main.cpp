@@ -726,7 +726,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                         }
 
 
-                        if(spustitTrasu_onRelease==1){readPoints(); spustitTrasu_onRelease = false;}//{return;}
+                        if(spustitTrasu_onRelease==1){return;}
                         if(cyklovatTrasu_onRelease==1){return;}
 
                         if(rucniRizeni_onRelease==1){return;}
@@ -840,6 +840,8 @@ extern "C" void app_main(void)
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
 
         if (zadavaniTrasy_onRelease == 1) {makePoints(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); zadavaniTrasy_onRelease = false;}
+
+        if (spustitTrasu_onRelease == 1) {drivePointsOnce(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); spustitTrasu_onRelease = false;}
 
     }
  
