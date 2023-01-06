@@ -829,7 +829,7 @@ extern "C" void app_main(void)
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
 
     count_positions_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
-    movePosition(motor0, motor1, motor2, motor3, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
+    movePosition(motor0, motor1, motor2, motor3, driver0, driver1, driver2, driver3);
     
 
     while(1){
