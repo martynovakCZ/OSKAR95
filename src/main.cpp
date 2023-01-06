@@ -122,6 +122,10 @@ static void initGridUi() {
             printf("Synchronize.onRelease \n");
             synchronize_onRelease = true;
     }); 
+        builder.Reset.onRelease([](Button &s){
+            printf("Reset.onRelease \n");
+            reset_onRelease = true;
+    }); 
 
 
         builder.KlestePlus.onPress([](Button &s){
@@ -324,7 +328,8 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                 printf("FINALSTEP2:%d\n", FinalStep2);
                 printf("FINALSTEP3:%d\n", FinalStep3);*/
                 return;
-            }         
+            }
+            if (reset_onRelease == 1) return;         
         }
         }
     }
@@ -761,6 +766,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                         if(cyklovatTrasu_onRelease==1){return;}
 
                         if(rucniRizeni_onRelease==1){return;}
+                        if(reset_onRelease==1){return;}
 
                         //vTaskDelay(50/portTICK_PERIOD_MS); // must be commented to accuracy
 
@@ -778,10 +784,24 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         printf("Vdriver2:   %d\n", Vdriver2[i]);
         printf("Vdriver3:   %d\n", Vdriver3[i]);
         movePosition(Vdriver0[i], Vdriver1[i], Vdriver2[i], Vdriver3[i] ,driver0, driver1, driver2, driver3);
+
+        if (reset_onRelease==1)return;
     }
    }
 
    void drivePointsCycle(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){} 
+
+   void resetPoints(){
+    Vdriver0.clear();
+    Vdriver1.clear();
+    Vdriver2.clear();
+    Vdriver3.clear();
+
+    std::vector<int>().swap(Vdriver0);
+    std::vector<int>().swap(Vdriver1);
+    std::vector<int>().swap(Vdriver2);
+    std::vector<int>().swap(Vdriver3);
+   }
   
 extern "C" void app_main(void)
 {   
@@ -882,6 +902,9 @@ extern "C" void app_main(void)
         if (zadavaniTrasy_onRelease == 1) {makePoints(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); zadavaniTrasy_onRelease = false;}
 
         if (spustitTrasu_onRelease == 1) {drivePointsOnce(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); spustitTrasu_onRelease = false;}
+
+        if (reset_onRelease == 1) {resetPoints(); reset_onRelease = false;}
+
 
         vTaskDelay(50/portTICK_PERIOD_MS);
 

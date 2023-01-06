@@ -83,6 +83,8 @@ volatile bool pridatBod_onRelease = false;
 volatile bool spustitTrasu_onRelease = false;
 volatile bool cyklovatTrasu_onRelease = false;
 volatile bool synchronize_onRelease = false;
+volatile bool reset_onRelease = false;
+
 volatile bool klestePlus_onPress = false;
 volatile bool klestePlus_onRelease = false;
 volatile bool klesteMinus_onPress = false;
