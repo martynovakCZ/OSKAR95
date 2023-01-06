@@ -690,9 +690,9 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                         }
                     }
                 } else {
-                        if(podstavaPlus_onPress == true){  driver0.set_speed(motor_speed0); reverseDriver0 = true; podstavaPlus_onPress = false;}
+                        if(podstavaPlus_onPress == true){  driver0.set_speed(motor_speed0); reverseDriver0 = false; podstavaPlus_onPress = false;}
                         if(podstavaPlus_onRelease == true){    driver0.set_speed(0); podstavaPlus_onRelease = false;}
-                        if(podstavaMinus_onPress == true){  driver0.set_speed(motor_speed0*(-1)); reverseDriver0 = false; podstavaMinus_onPress = false;}
+                        if(podstavaMinus_onPress == true){  driver0.set_speed(motor_speed0*(-1)); reverseDriver0 = true; podstavaMinus_onPress = false;}
                         if(podstavaMinus_onRelease == true){    driver0.set_speed(0); podstavaMinus_onRelease  = false;}
 
                         if(klestePlus_onPress == true){  driver1.set_speed(motor_speed1); reverseDriver1 = true; klestePlus_onPress = false;}
@@ -827,6 +827,7 @@ extern "C" void app_main(void)
 
     
 
+    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
 
     IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0); //testsynchro must be before this init
     IndexStepCounter_init(PCNT_UNIT_1, GPIO_NUM_18, GPIO_NUM_0);
@@ -836,7 +837,6 @@ extern "C" void app_main(void)
     //count_positions_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     //movePosition(motor0, motor1, motor2, motor3, driver0, driver1, driver2, driver3);
     
-    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
 
     while(1){
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
