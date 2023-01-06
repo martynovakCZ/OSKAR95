@@ -875,6 +875,7 @@ extern "C" void app_main(void)
 
     while(1){
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
+
         if (rucniRizeni_onRelease == 1) {realTimeControl(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); rucniRizeni_onRelease = false;}
 
         if (zadavaniTrasy_onRelease == 1) {makePoints(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); zadavaniTrasy_onRelease = false;}
@@ -884,24 +885,7 @@ extern "C" void app_main(void)
         vTaskDelay(50/portTICK_PERIOD_MS);
 
     }
-    //poznámka jenom proto, abych vedel 
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
-    //9
+
  
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
    // vTaskDelay(500/portTICK_PERIOD_MS);
