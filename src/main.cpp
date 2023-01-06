@@ -901,7 +901,7 @@ extern "C" void app_main(void)
 
         if (zadavaniTrasy_onRelease == 1) {makePoints(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); zadavaniTrasy_onRelease = false;}
 
-        if (spustitTrasu_onRelease == 1) {drivePointsOnce(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); spustitTrasu_onRelease = false;}
+        if (spustitTrasu_onRelease == 1 && Vdriver0.size()>=1) {drivePointsOnce(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); spustitTrasu_onRelease = false;}
 
         if (reset_onRelease == 1) {resetPoints(); reset_onRelease = false;}
 
