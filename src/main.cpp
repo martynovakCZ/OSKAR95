@@ -228,10 +228,10 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         int dir2=0; 
         int dir3=0;
 
-        if (driver0Steps<0) {dir0=(-1);} else if (driver0Steps>0) {dir0=1;}
-        if (driver1Steps<0) {dir1=(-1);} else if (driver1Steps>0) {dir1=1;}
-        if (driver2Steps<0) {dir2=(-1);} else if (driver2Steps>0) {dir2=1;}
-        if (driver3Steps<0) {dir3=(-1);} else if (driver3Steps>0) {dir3=1;}
+        if (driver0Steps<0) {dir0=(-1); driver0Steps=driver0Steps*(-1);} else if (driver0Steps>0) {dir0=1;}
+        if (driver1Steps<0) {dir1=(-1); driver1Steps=driver1Steps*(-1);} else if (driver1Steps>0) {dir1=1;}
+        if (driver2Steps<0) {dir2=(-1); driver2Steps=driver2Steps*(-1);} else if (driver2Steps>0) {dir2=1;}
+        if (driver3Steps<0) {dir3=(-1); driver3Steps=driver3Steps*(-1);} else if (driver3Steps>0) {dir3=1;}
 
         pcnt_evt_queue = xQueueCreate(10, sizeof(pcnt_evt_t));
         pcnt_evt_t evt;
@@ -605,6 +605,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
 
    void readPoints(){
+        printf("readPoints function\n");
         for(int a = 0; a<=Vdriver0.size()-1; a++){
             printf("%d. - %d    ", a, Vdriver0[a]);
             vTaskDelay(50/portTICK_PERIOD_MS);
@@ -739,8 +740,13 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
    }
 
    void drivePointsOnce(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+    readPoints();
     testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     for (int i=0; i<= Vdriver0.size()-1; i++){
+        printf("Vdriver0:   %d\n", Vdriver0[i]);
+        printf("Vdriver1:   %d\n", Vdriver1[i]);
+        printf("Vdriver2:   %d\n", Vdriver2[i]);
+        printf("Vdriver3:   %d\n", Vdriver3[i]);
         movePosition(Vdriver0[i], Vdriver1[i], Vdriver2[i], Vdriver3[i] ,driver0, driver1, driver2, driver3);
     }
    }
