@@ -242,13 +242,13 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         int startSteps2 = FinalStep2;
         int startSteps3 = FinalStep3;
         driver0.set_speed(motor_speed*dir0);
-        vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+        //vTaskDelay(motor_delay/portTICK_PERIOD_MS);
         driver1.set_speed(motor_speed*dir1);
-        vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+        //vTaskDelay(motor_delay/portTICK_PERIOD_MS);
         driver2.set_speed(motor_speed*dir2);
-        vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+        //vTaskDelay(motor_delay/portTICK_PERIOD_MS);
         driver3.set_speed(motor_speed*dir3);
-        vTaskDelay(motor_delay/portTICK_PERIOD_MS);
+        //vTaskDelay(motor_delay/portTICK_PERIOD_MS);
 
         while(1){
         res = xQueueReceive(pcnt_evt_queue, &evt, 0 / portTICK_PERIOD_MS);
@@ -662,6 +662,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
    
    void makePoints(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
         testsynchro( driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3);
+        vTaskDelay(250/portTICK_PERIOD_MS);
         int stepsDriver0=0;
         int stepsDriver1=0;
         int stepsDriver2=0;
@@ -761,7 +762,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
                         if(rucniRizeni_onRelease==1){return;}
 
-                        vTaskDelay(50/portTICK_PERIOD_MS);
+                        //vTaskDelay(50/portTICK_PERIOD_MS); // must be commented to accuracy
 
                     }
     }
