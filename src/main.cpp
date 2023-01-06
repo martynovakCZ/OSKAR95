@@ -739,6 +739,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
    }
 
    void drivePointsOnce(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     for (int i=0; i<= Vdriver0.size()-1; i++){
         movePosition(Vdriver0[i], Vdriver1[i], Vdriver2[i], Vdriver3[i] ,driver0, driver1, driver2, driver3);
     }
@@ -832,9 +833,10 @@ extern "C" void app_main(void)
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
 
-    count_positions_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
-    movePosition(motor0, motor1, motor2, motor3, driver0, driver1, driver2, driver3);
+    //count_positions_from_synchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    //movePosition(motor0, motor1, motor2, motor3, driver0, driver1, driver2, driver3);
     
+    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
 
     while(1){
         if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
@@ -843,13 +845,14 @@ extern "C" void app_main(void)
 
         if (spustitTrasu_onRelease == 1) {drivePointsOnce(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); spustitTrasu_onRelease = false;}
 
+        vTaskDelay(50/portTICK_PERIOD_MS);
+
     }
  
    // movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
    // vTaskDelay(500/portTICK_PERIOD_MS);
 
-   /* testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
-    movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
+    /*movePosition(360, 360, 360, 360, -1, -1, 1, 1, driver0, driver1, driver2, driver3);
     vTaskDelay(500/portTICK_PERIOD_MS);*/
 
     //synchronizeMotor(driver0, opto0, 1);
