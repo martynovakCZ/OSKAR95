@@ -731,9 +731,9 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                         if(podstavaMinus_onPress == true){  driver0.set_speed(motor_speed0*(-1)); reverseDriver0 = true; podstavaMinus_onPress = false;}
                         if(podstavaMinus_onRelease == true){    driver0.set_speed(0); podstavaMinus_onRelease  = false;}
 
-                        if(klestePlus_onPress == true){  driver1.set_speed(motor_speed1); reverseDriver1 = true; klestePlus_onPress = false;}
+                        if(klestePlus_onPress == true){  driver1.set_speed(motor_speed1); reverseDriver1 = false; klestePlus_onPress = false;}
                         if(klestePlus_onRelease == true){    driver1.set_speed(0); klestePlus_onRelease = false;}
-                        if(klesteMinus_onPress == true){  driver1.set_speed(motor_speed1*(-1)); reverseDriver1 = false; klesteMinus_onPress = false;}
+                        if(klesteMinus_onPress == true){  driver1.set_speed(motor_speed1*(-1)); reverseDriver1 = true; klesteMinus_onPress = false;}
                         if(klesteMinus_onRelease == true){    driver1.set_speed(0); klesteMinus_onRelease = false;}
 
                         if(loketPlus_onPress == true){  driver2.set_speed(motor_speed2); reverseDriver2 = false; loketPlus_onPress = false;}
@@ -792,6 +792,8 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
    void drivePointsCycle(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){} 
 
    void resetPoints(){
+
+
     Vdriver0.clear();
     Vdriver1.clear();
     Vdriver2.clear();
