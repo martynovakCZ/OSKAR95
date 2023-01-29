@@ -334,7 +334,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         }
     }
 
-    void testsynchro(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+    void synchroMotors(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
             driver0.set_speed(motor_speed1);
             driver1.set_speed(motor_speed2);
             driver2.set_speed(motor_speed*(-1));
@@ -666,7 +666,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
    }
    
    void makePoints(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
-        testsynchro( driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3);
+        synchroMotors( driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3);
         vTaskDelay(250/portTICK_PERIOD_MS);
         int stepsDriver0=0;
         int stepsDriver1=0;
@@ -777,7 +777,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
    void drivePointsOnce(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
     readPoints();
-    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    synchroMotors(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
     for (int i=0; i<= Vdriver0.size()-1; i++){
         printf("Vdriver0:   %d\n", Vdriver0[i]);
         printf("Vdriver1:   %d\n", Vdriver1[i]);
@@ -885,9 +885,9 @@ extern "C" void app_main(void)
 
     
 
-    testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+    synchroMotors(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
 
-    IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0); //testsynchro must be before this init
+    IndexStepCounter_init(PCNT_UNIT_0, GPIO_NUM_12, GPIO_NUM_0); //synchroMotors must be before this init
     IndexStepCounter_init(PCNT_UNIT_1, GPIO_NUM_18, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_2, GPIO_NUM_15, GPIO_NUM_0);
     IndexStepCounter_init(PCNT_UNIT_3, GPIO_NUM_13, GPIO_NUM_0);
@@ -897,7 +897,7 @@ extern "C" void app_main(void)
     
 
     while(1){
-        if (synchronize_onRelease == 1) { testsynchro(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
+        if (synchronize_onRelease == 1) { synchroMotors(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); synchronize_onRelease = false;}
 
         if (rucniRizeni_onRelease == 1) {realTimeControl(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); rucniRizeni_onRelease = false;}
 
