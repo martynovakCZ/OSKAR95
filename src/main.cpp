@@ -631,7 +631,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         if(ramenoMinus_onPress == true){  driver3.set_speed(motor_speed3*(-1)); ramenoMinus_onPress = false;}
         if(ramenoMinus_onRelease == true){    driver3.set_speed(0); ramenoMinus_onRelease = false;}
 
-        if(zadavaniTrasy_onRelease==1){ zadavaniTrasy_onRelease = false; return;}
+        if(zadavaniTrasy_onRelease==1){return;}
 
         vTaskDelay(50/portTICK_PERIOD_MS);
     }    
