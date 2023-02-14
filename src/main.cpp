@@ -782,6 +782,9 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
                         if(spustitTrasu_onRelease==1){return;}
                         if(cyklovatTrasu_onRelease==1){return;}
 
+                        if(Vlajka_onRelease==1){return;}
+                        if(Dopravnik_onRelease==1){return;}
+
                         if(rucniRizeni_onRelease==1){return;}
                         if(reset_onRelease==1){return;}
 
