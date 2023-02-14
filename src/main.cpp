@@ -192,7 +192,13 @@ static void initGridUi() {
             printf("PodstavaMinus.onRelease \n");
             podstavaMinus_onRelease = true;
     });
-
+        builder.MotorSpeed.onChanged([](Slider &s) {
+        motor_speed0 = int(MOTOR_SPEED_COEFICIENT /(4- s.value()));
+        motor_speed1 = int(MOTOR_SPEED_COEFICIENT /(4- s.value()));
+        motor_speed2 = int(MOTOR_SPEED_COEFICIENT /(4- s.value()));
+        motor_speed3 = int(MOTOR_SPEED_COEFICIENT /(4- s.value()));
+        printf("motor_speed: %f -> %d\n", s.value(), motor_speed); 
+    });
 
     // Commit the layout. Beyond this point, calling any builder methods on the UI is invalid.
     builder.commit();
@@ -633,7 +639,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
         if(zadavaniTrasy_onRelease==1){return;}
         if(reset_onRelease==1){resetPoints();}
-        if(synchronize_onRelease==1){synchroMotors();}
+        if(synchronize_onRelease==1){synchroMotors(driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3);}
 
         vTaskDelay(50/portTICK_PERIOD_MS);
     }    

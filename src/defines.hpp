@@ -39,10 +39,10 @@
 
 
 // globální proměnné pro pokusy s grafickým rozhraním
-volatile int motor_speed0 = MOTOR_SPEED_COEFICIENT/3;      //svirani klepete
-volatile int motor_speed1 = MOTOR_SPEED_COEFICIENT/3;      //rotace zakladny
-volatile int motor_speed2 = MOTOR_SPEED_COEFICIENT/3;      //zdvih ramene s klepety
-volatile int motor_speed3 = MOTOR_SPEED_COEFICIENT/3;      //zdvih celeho ramene
+volatile int motor_speed0 = MOTOR_SPEED_COEFICIENT;      //svirani klepete
+volatile int motor_speed1 = MOTOR_SPEED_COEFICIENT;      //rotace zakladny
+volatile int motor_speed2 = MOTOR_SPEED_COEFICIENT;      //zdvih ramene s klepety
+volatile int motor_speed3 = MOTOR_SPEED_COEFICIENT;      //zdvih celeho ramene
 volatile int motor_speed = MOTOR_SPEED_COEFICIENT/3;       //testovaci motorspeed
 volatile int motor_load = 0;
 volatile int motor_stop_sensitivity = 100;
