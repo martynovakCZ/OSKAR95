@@ -192,6 +192,14 @@ static void initGridUi() {
             printf("PodstavaMinus.onRelease \n");
             podstavaMinus_onRelease = true;
     });
+        builder.vlajka.onRelease([](Button &s){
+            printf("PodstavaMinus.onRelease \n");
+            Vlajka_onRelease = true;
+    });
+        builder.PodstavaMinus.onRelease([](Button &s){
+            printf("PodstavaMinus.onRelease \n");
+            Dopravnik_onRelease = true;
+    });
         builder.MotorSpeed.onChanged([](Slider &s) {
         motor_speed0 = int(MOTOR_SPEED_COEFICIENT /(4- s.value()));
         motor_speed1 = int(MOTOR_SPEED_COEFICIENT /(4- s.value()));

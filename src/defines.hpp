@@ -101,6 +101,8 @@ volatile bool podstavaPlus_onPress = false;
 volatile bool podstavaPlus_onRelease = false;
 volatile bool podstavaMinus_onPress = false;
 volatile bool podstavaMinus_onRelease = false;
+volatile bool Vlajka_onRelease = false;
+volatile bool Dopravnik_onRelease = false;
 
 std::vector<int> Vdriver0 = {};
 std::vector<int> Vdriver1 = {};
