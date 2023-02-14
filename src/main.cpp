@@ -245,13 +245,13 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         int startSteps1 = FinalStep1;
         int startSteps2 = FinalStep2;
         int startSteps3 = FinalStep3;
-        driver0.set_speed(motor_speed*dir0);
+        driver0.set_speed(motor_speed0*dir0);
         //vTaskDelay(motor_delay/portTICK_PERIOD_MS);
-        driver1.set_speed(motor_speed*dir1);
+        driver1.set_speed(motor_speed1*dir1);
         //vTaskDelay(motor_delay/portTICK_PERIOD_MS);
-        driver2.set_speed(motor_speed*dir2);
+        driver2.set_speed(motor_speed2*dir2);
         //vTaskDelay(motor_delay/portTICK_PERIOD_MS);
-        driver3.set_speed(motor_speed*dir3);
+        driver3.set_speed(motor_speed3*dir3);
         //vTaskDelay(motor_delay/portTICK_PERIOD_MS);
 
         while(1){
@@ -335,10 +335,10 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
     }
 
     void synchroMotors(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
-            driver0.set_speed(motor_speed1);
-            driver1.set_speed(motor_speed2);
-            driver2.set_speed(motor_speed*(-1));
-            driver3.set_speed(motor_speed*(-1));
+            driver0.set_speed(motor_speed0);
+            driver1.set_speed(motor_speed1);
+            driver2.set_speed(motor_speed2*(-1));
+            driver3.set_speed(motor_speed3*(-1));
             while(1){
 
             
@@ -386,10 +386,10 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
             pcnt_evt_t evt;
             portBASE_TYPE res;
 
-            driver0.set_speed(motor_speed1);
-            driver1.set_speed(motor_speed2);
-            driver2.set_speed(motor_speed*(-1));
-            driver3.set_speed(motor_speed*(-1));
+            driver0.set_speed(motor_speed0);
+            driver1.set_speed(motor_speed1);
+            driver2.set_speed(motor_speed2*(-1));
+            driver3.set_speed(motor_speed3*(-1));
 
            /* int motor0=0;
             int motor1=0;
@@ -471,16 +471,16 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
             portBASE_TYPE res;
             switch (opto){
                 case opto0:
-                    driver.set_speed(motor_speed1);
+                    driver.set_speed(motor_speed0);
                     break;
                 case opto1:
-                    driver.set_speed(motor_speed2);
+                    driver.set_speed(motor_speed1);
                     break;
                 case opto2:
-                    driver.set_speed(motor_speed*(-1));
+                    driver.set_speed(motor_speed2*(-1));
                     break;
                 case opto3:
-                    driver.set_speed(motor_speed*(-1));
+                    driver.set_speed(motor_speed3*(-1));
                     break;
                 default:
                     break;
@@ -632,6 +632,8 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         if(ramenoMinus_onRelease == true){    driver3.set_speed(0); ramenoMinus_onRelease = false;}
 
         if(zadavaniTrasy_onRelease==1){return;}
+        if(reset_onRelease==1){resetPoints();}
+        if(synchronize_onRelease==1){synchroMotors();}
 
         vTaskDelay(50/portTICK_PERIOD_MS);
     }    
@@ -776,20 +778,57 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
    }
 
    void drivePointsOnce(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
-    readPoints();
-    synchroMotors(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
-    for (int i=0; i<= Vdriver0.size()-1; i++){
-        printf("Vdriver0:   %d\n", Vdriver0[i]);
-        printf("Vdriver1:   %d\n", Vdriver1[i]);
-        printf("Vdriver2:   %d\n", Vdriver2[i]);
-        printf("Vdriver3:   %d\n", Vdriver3[i]);
-        movePosition(Vdriver0[i], Vdriver1[i], Vdriver2[i], Vdriver3[i] ,driver0, driver1, driver2, driver3);
+        readPoints();
+        synchroMotors(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
 
-        if (reset_onRelease==1)return;
-    }
+        for (int i=0; i<= Vdriver0.size()-1; i++){
+
+            printf("Vdriver0:   %d\n", Vdriver0[i]);
+            printf("Vdriver1:   %d\n", Vdriver1[i]);
+            printf("Vdriver2:   %d\n", Vdriver2[i]);
+            printf("Vdriver3:   %d\n", Vdriver3[i]);
+
+            movePosition(Vdriver0[i], Vdriver1[i], Vdriver2[i], Vdriver3[i] ,driver0, driver1, driver2, driver3);
+
+            if (reset_onRelease==1)return;
+        }
    }
 
-   void drivePointsCycle(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){} 
+   void drivePointsCycle(Driver driver0, Driver driver1, Driver driver2, Driver driver3, gpio_num_t opto0, gpio_num_t opto1, gpio_num_t opto2, gpio_num_t opto3){
+        readPoints();
+        synchroMotors(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+        while(1){
+            for (int i=0; i<= Vdriver0.size()-1; i++){
+            
+                printf("Vdriver0:   %d\n", Vdriver0[i]);
+                printf("Vdriver1:   %d\n", Vdriver1[i]);
+                printf("Vdriver2:   %d\n", Vdriver2[i]);
+                printf("Vdriver3:   %d\n", Vdriver3[i]);
+            
+                movePosition(Vdriver0[i], Vdriver1[i], Vdriver2[i], Vdriver3[i] ,driver0, driver1, driver2, driver3);
+
+                if (reset_onRelease==1)return;
+
+            }
+
+            /*int comeBack0=0;
+            int comeBack1=0;
+            int comeBack2=0;
+            int comeBack3=0;
+
+            for (int i=0; i<= Vdriver0.size()-1; i++){
+                int comeBack0 = comeBack0 - Vdriver0[i];
+                int comeBack1 = comeBack1 - Vdriver1[i];
+                int comeBack2 = comeBack2 - Vdriver2[i];
+                int comeBack3 = comeBack3 - Vdriver3[i];
+            }
+
+            movePosition(comeBack0, comeBack1, comeBack2, comeBack3, driver0, driver1, driver2, driver3);*/
+        synchroMotors(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3);
+
+        }
+   }
+
 
    void resetPoints(){
 
