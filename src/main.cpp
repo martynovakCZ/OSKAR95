@@ -815,6 +815,13 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         while(1){
             for (int i=0; i<= Vdriver0.size()-1; i++){
             
+                if (reset_onRelease==1)return;
+                if (synchronize_onRelease==1)return;
+                if (rucniRizeni_onRelease==1)return;
+                if (zadavaniTrasy_onRelease==1)return;
+                if (Vlajka_onRelease==1)return;
+                if (Dopravnik_onRelease==1)return;
+                
                 printf("Vdriver0:   %d\n", Vdriver0[i]);
                 printf("Vdriver1:   %d\n", Vdriver1[i]);
                 printf("Vdriver2:   %d\n", Vdriver2[i]);
@@ -822,10 +829,14 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
             
                 movePosition(Vdriver0[i], Vdriver1[i], Vdriver2[i], Vdriver3[i] ,driver0, driver1, driver2, driver3);
 
-                if (reset_onRelease==1)return;
-
             }
 
+            if (reset_onRelease==1)return;
+            if (synchronize_onRelease==1)return;
+            if (rucniRizeni_onRelease==1)return;
+            if (zadavaniTrasy_onRelease==1)return;
+            if (Vlajka_onRelease==1)return;
+            if (Dopravnik_onRelease==1)return;
             /*int comeBack0=0;
             int comeBack1=0;
             int comeBack2=0;
@@ -961,6 +972,12 @@ extern "C" void app_main(void)
 
         if (reset_onRelease == 1) {resetPoints(); reset_onRelease = false;}
 
+        if (cyklovatTrasu_onRelease == 1) {drivePointsCycle(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); cyklovatTrasu_onRelease = false;}
+
+        if (Vlajka_onRelease == 1) { Vlajka_onRelease = false;}
+
+
+        if (Dopravnik_onRelease == 1) { Dopravnik_onRelease = false;}
 
         vTaskDelay(50/portTICK_PERIOD_MS);
 
