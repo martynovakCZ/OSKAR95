@@ -809,6 +809,12 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
             movePosition(Vdriver0[i], Vdriver1[i], Vdriver2[i], Vdriver3[i] ,driver0, driver1, driver2, driver3);
 
             if (reset_onRelease==1)return;
+            if (synchronize_onRelease==1)return;
+            if (rucniRizeni_onRelease==1)return;
+            if (zadavaniTrasy_onRelease==1)return;
+            if (Vlajka_onRelease==1)return;
+            if (Dopravnik_onRelease==1)return;
+            if (cyklovatTrasu_onRelease==1)return;
         }
    }
 
@@ -971,11 +977,11 @@ extern "C" void app_main(void)
 
         if (zadavaniTrasy_onRelease == 1) {makePoints(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); zadavaniTrasy_onRelease = false;}
 
-        if (spustitTrasu_onRelease == 1 && Vdriver0.size()>=1) {drivePointsOnce(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); spustitTrasu_onRelease = false;}
+        if (spustitTrasu_onRelease == 1 && Vdriver0.size()>=1) {drivePointsOnce(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); spustitTrasu_onRelease = false;} else spustitTrasu_onRelease = false;
 
         if (reset_onRelease == 1) {resetPoints(); reset_onRelease = false;}
 
-        if (cyklovatTrasu_onRelease == 1) {drivePointsCycle(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); cyklovatTrasu_onRelease = false;}
+        if (cyklovatTrasu_onRelease == 1 && Vdriver0.size()>=1) {drivePointsCycle(driver0, driver1, driver2, driver3, opto0, opto1, opto2, opto3); cyklovatTrasu_onRelease = false;}  else spustitTrasu_onRelease = false;
 
         if (Vlajka_onRelease == 1) { Vlajka_onRelease = false;}
 
