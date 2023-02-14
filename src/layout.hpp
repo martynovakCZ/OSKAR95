@@ -136,6 +136,7 @@ class _LayoutBuilder {
             UI.slider(0, 12.5, 12, 1, 59319)
             .min(1)
             .max(3)
+            .value(1)
         )
     {
     }

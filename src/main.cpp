@@ -196,7 +196,7 @@ static void initGridUi() {
             printf("PodstavaMinus.onRelease \n");
             Vlajka_onRelease = true;
     });
-        builder.PodstavaMinus.onRelease([](Button &s){
+        builder.dopravnik.onRelease([](Button &s){
             printf("PodstavaMinus.onRelease \n");
             Dopravnik_onRelease = true;
     });
@@ -646,8 +646,9 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
         if(ramenoMinus_onRelease == true){    driver3.set_speed(0); ramenoMinus_onRelease = false;}
 
         if(zadavaniTrasy_onRelease==1){return;}
-        if(reset_onRelease==1){resetPoints();}
-        if(synchronize_onRelease==1){synchroMotors(driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3);}
+        if(reset_onRelease==1){return;}
+        //if(synchronize_onRelease==1){synchroMotors(driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3); synchronize_onRelease=false;}
+        if(synchronize_onRelease==1){return;}
 
         vTaskDelay(50/portTICK_PERIOD_MS);
     }    
