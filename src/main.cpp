@@ -887,25 +887,44 @@ extern "C" void app_main(void)
 	io_conf.pin_bit_mask = GPIO_BIT_MASK;
 	gpio_config(&io_conf);
 
-    gpio_set_level(VCC_IO_0, 1); // zapnuti napajeni do driveru0 
+/* gpio_set_level(VCC_IO_0, 1); // zapnuti napajeni do driveru0 
     gpio_set_level(VCC_IO_1, 1); // zapnuti napajeni do driveru1
     gpio_set_level(VCC_IO_2, 1); // zapnuti napajeni do driveru2
-    gpio_set_level(VCC_IO_3, 1); // zapnuti napajeni do driveru3
+    gpio_set_level(VCC_IO_3, 1); // zapnuti napajeni do driveru3 */
+
+    gpio_get_level(DRIVER_0_ENABLE, 0);
+    gpio_get_level(DRIVER_1_ENABLE, 0);
+    gpio_get_level(DRIVER_2_ENABLE, 0);
+    gpio_get_level(DRIVER_3_ENABLE, 0);
+
+    vTaskDelay(1000/portTICK_PERIOD_MS);
+
+    gpio_get_level(DRIVER_0_ENABLE, 1);
+    gpio_get_level(DRIVER_1_ENABLE, 1);
+    gpio_get_level(DRIVER_2_ENABLE, 1);
+    gpio_get_level(DRIVER_3_ENABLE, 1);
+
+    vTaskDelay(1000/portTICK_PERIOD_MS);
+
+    gpio_get_level(DRIVER_0_ENABLE, 0);
+    gpio_get_level(DRIVER_1_ENABLE, 0);
+    gpio_get_level(DRIVER_2_ENABLE, 0);
+    gpio_get_level(DRIVER_3_ENABLE, 0);
 
     gpio_set_level(GPIO_NUM_32, 1); // zapnuti siloveho napajeni do driveru 
     printf("Simple Motor \n\tbuild %s %s\n", __DATE__, __TIME__);
     check_reset();
     iopins_init();
-    gpio_set_level(VCC_IO_0, 0);              // reset driveru
-    gpio_set_level(VCC_IO_1, 0);
-    gpio_set_level(VCC_IO_2, 0);
-    gpio_set_level(VCC_IO_3, 0);
+    gpio_get_level(DRIVER_0_ENABLE, 0);
+    gpio_get_level(DRIVER_1_ENABLE, 0);
+    gpio_get_level(DRIVER_2_ENABLE, 0);
+    gpio_get_level(DRIVER_3_ENABLE, 0);
 
     vTaskDelay(1000 / portTICK_PERIOD_MS);
-    gpio_set_level(VCC_IO_0, 1);              //zapíná VCCIO driveru
-    gpio_set_level(VCC_IO_1, 1);
-    gpio_set_level(VCC_IO_2, 1);
-    gpio_set_level(VCC_IO_3, 1);
+    gpio_get_level(DRIVER_0_ENABLE, 1);
+    gpio_get_level(DRIVER_1_ENABLE, 1);
+    gpio_get_level(DRIVER_2_ENABLE, 1);
+    gpio_get_level(DRIVER_3_ENABLE, 1);
     nvs_init();                             //inicializace pro zápis do flash paměti
     Uart drivers_uart {
         DRIVERS_UART,

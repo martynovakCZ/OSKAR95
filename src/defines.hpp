@@ -4,20 +4,20 @@
 #define DRIVER_1_ADDRES           1  //klepeta kladný roztahuje kladný k závoře
 #define DRIVER_2_ADDRES           2  //část s klepety (loket ruky) kladný dolů od optozávory
 #define DRIVER_3_ADDRES           3  //cele rameno dolu kladny dolu kladny od zavor
-#define DRIVER_0_ENABLE           GPIO_NUM_23   // H= disable motor output
-#define DRIVER_1_ENABLE           GPIO_NUM_23   // H= disable motor output
-#define DRIVER_2_ENABLE           GPIO_NUM_23   // H= disable motor output
-#define DRIVER_3_ENABLE           GPIO_NUM_23   // H= disable motor output
+#define DRIVER_0_ENABLE           GPIO_NUM_33   // H= disable motor output
+#define DRIVER_1_ENABLE           GPIO_NUM_25   // H= disable motor output
+#define DRIVER_2_ENABLE           GPIO_NUM_26   // H= disable motor output
+#define DRIVER_3_ENABLE           GPIO_NUM_27   // H= disable motor output
 
 #define opto3                     GPIO_NUM_34   // optozavora podstavy
 #define opto0                     GPIO_NUM_35   // zdvih celeho ramene  
 #define opto1                     GPIO_NUM_36   // stisk klepet
 #define opto2                     GPIO_NUM_39   // rameno s klepety
 
-#define VCC_IO_0                  GPIO_NUM_33  // L = reset driver 0, H = driver0 on
+/*#define VCC_IO_0                  GPIO_NUM_33  // L = reset driver 0, H = driver0 on
 #define VCC_IO_1                  GPIO_NUM_25  // L = reset driver 0, H = driver0 on
 #define VCC_IO_2                  GPIO_NUM_26  // L = reset driver 0, H = driver0 on
-#define VCC_IO_3                  GPIO_NUM_27  // L = reset driver 0, H = driver0 on
+#define VCC_IO_3                  GPIO_NUM_27  // L = reset driver 0, H = driver0 on*/
 
 #define SW_CTRL                   GPIO_NUM_32  // L = transistor Q3 off -> motor power off, H = all drivers on
 
