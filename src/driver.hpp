@@ -11,8 +11,8 @@ class
 
 Driver {
     Driver() = delete;
-    Driver(const Driver&) = delete;
-    void operator = (const Driver&) = delete;
+    //Driver(const Driver&) = delete;
+    //void operator = (const Driver&) = delete;
 
     typedef uint32_t data_t;
 public:
@@ -27,7 +27,7 @@ public:
 
     bool init() {
         gpio_config_t en_pin_conf {
-            .pin_bit_mask = 1UL<<uint64_t(c_enable_pin),
+            .pin_bit_mask = 1ULL<<uint64_t(c_enable_pin),
             .mode = GPIO_MODE_OUTPUT,
             .pull_up_en = GPIO_PULLUP_DISABLE,
             .pull_down_en = GPIO_PULLDOWN_DISABLE,
@@ -40,6 +40,7 @@ public:
         printf("registr 0x00 pred zapisem  %d %X\n", result, data);
         vTaskDelay(100 / portTICK_PERIOD_MS);
         _write(0, 0x000000E0);
+        //_write(0, 0x000000F0);
         vTaskDelay(100 / portTICK_PERIOD_MS);
         result = _read(0, data);
         printf("registr 0x00 po zapisu %d %X\n", result, data);
@@ -60,6 +61,16 @@ public:
     int read_speed(uint32_t& read) {
         return _read(0x22, read);
     }
+//rozpracovano TMC documentation page 20
+    bool set_index(int settings){
+        return _write(0x00, settings);
+    }
+
+    int read_index(uint32_t& read){
+        return _read
+        (0x00, read);
+    }
+
     
 
 

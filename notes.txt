@@ -1,0 +1,13 @@
+udělat přes gridUI applikaci, ve které budou režimy:
+-manuální ovládání
+    -4 popsané slidery pro pohyb každého motoru
+-autonomní
+    -režim zadávání: manuálně najede na pozici, zapíše ji jako projetý bod
+
+
+FUNKCE PRO HLIDANI OPTOZAVOR IMPLEMENTOVAT VSUDE
+FinalStep0, 1, 2, 3 by mohl byt az primo ve funkci
+motor0, 1, 2, 3 by mohl byt az primo ve funkci
+
+OPRAVIT ABY SE PRI ONRELEASE NASTAVILO ONPRESS NA false
+OPRAVIT ABY SE PRI ONRELEASE PO AKCI NASTAVILO NA FALSE

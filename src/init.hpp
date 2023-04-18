@@ -33,7 +33,7 @@ void encoder_init(const pcnt_unit_t unit, const gpio_num_t pinA, const gpio_num_
         .pos_mode = PCNT_COUNT_INC,
         .neg_mode = PCNT_COUNT_DEC,
         .counter_h_lim = ENCODER_H_LIM_VAL,
-        .counter_l_lim = ENCODER_L_LIM_VAL,
+        .counter_l_lim =ENCODER_L_LIM_VAL,
         .unit = unit,
         .channel = PCNT_CHANNEL_1,
     };
@@ -67,3 +67,4 @@ void nvs_init()
     }
     ESP_ERROR_CHECK( err );
 }
+  
