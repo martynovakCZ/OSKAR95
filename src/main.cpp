@@ -41,7 +41,7 @@ static void initGridUi() {
     // WiFi::connect("Jmeno wifi", "Heslo");    //připojení do místní sítě
     
     // Initialize RBProtocol
-    auto *protocol = new Protocol("Oskar", "Oskar", "Compiled at " __DATE__ " " __TIME__, [](const std::string& cmd, rbjson::Object* pkt) {
+    auto *protocol = new Protocol("Student", "Oskar", "Compiled at " __DATE__ " " __TIME__, [](const std::string& cmd, rbjson::Object* pkt) {
         UI.handleRbPacket(cmd, pkt);
     });
     protocol->start();
