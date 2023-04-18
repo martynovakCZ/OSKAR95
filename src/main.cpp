@@ -231,7 +231,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     driver.set_speed(0);                      // otáčení motoru se nastavuje zápisem rychlosti do driveru přes Uart
-    driver.set_IHOLD_IRUN (16, 32);             // proud IHOLD (při stání) =8/32, IRUN (při běhu)= 8/32 (8/32 je minimum, 16/32 je maximum pro dluhodobější provoz)
+    driver.set_IHOLD_IRUN (0, 31);             // proud IHOLD (při stání) =8/32, IRUN (při běhu)= 8/32 (8/32 je minimum, 16/32 je maximum pro dluhodobější provoz)
     driver.enable();                          //zapnutí mptoru
     vTaskDelay(300 / portTICK_PERIOD_MS);     //doba stání pro nastavení automatiky driveru
     driver.set_IHOLD_IRUN (iRun, iHold);             //proud IHOLD =0, IRUN = 8/32 (při stání je motor volně otočný)
@@ -881,11 +881,52 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
   
 extern "C" void app_main(void)
 {   
+    iopins_init();
+
     gpio_config_t io_conf;
 	io_conf.intr_type = GPIO_INTR_DISABLE;
     io_conf.mode = GPIO_MODE_INPUT;
 	io_conf.pin_bit_mask = GPIO_BIT_MASK;
 	gpio_config(&io_conf);
+
+        Uart drivers_uart {
+        DRIVERS_UART,
+        Uart::config_t {
+            .baud_rate = 750000,
+            .data_bits = UART_DATA_8_BITS,
+            .parity = UART_PARITY_DISABLE,
+            .stop_bits = UART_STOP_BITS_1,
+            .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
+            .rx_flow_ctrl_thresh = 122,
+            .use_ref_tick = false
+        },
+        Uart::pins_t {
+            .pin_txd = DRIVERS_UART_TXD,
+            .pin_rxd = DRIVERS_UART_RXD,
+            .pin_rts = UART_PIN_NO_CHANGE,
+            .pin_cts = UART_PIN_NO_CHANGE
+        },
+        Uart::buffers_t {
+            .rx_buffer_size = DRIVERS_UART_BUF_SIZE,
+            .tx_buffer_size = 0,
+            .event_queue_size = 0
+        }
+    };
+
+    Driver driver0 { drivers_uart, DRIVER_0_ADDRES, DRIVER_0_ENABLE };
+    initDriver(driver0, i_run, i_hold);
+
+    Driver driver1 { drivers_uart, DRIVER_1_ADDRES, DRIVER_1_ENABLE };
+    initDriver(driver1, i_run, i_hold);
+
+    Driver driver2 { drivers_uart, DRIVER_2_ADDRES, DRIVER_2_ENABLE };
+    initDriver(driver2, i_run, i_hold);
+
+    Driver driver3 { drivers_uart, DRIVER_3_ADDRES, DRIVER_3_ENABLE };
+    initDriver(driver3, i_run, i_hold);
+
+
+
 
 /* gpio_set_level(VCC_IO_0, 1); // zapnuti napajeni do driveru0 
     gpio_set_level(VCC_IO_1, 1); // zapnuti napajeni do driveru1
@@ -914,7 +955,7 @@ extern "C" void app_main(void)
     gpio_set_level(GPIO_NUM_32, 1); // zapnuti siloveho napajeni do driveru 
     printf("Simple Motor \n\tbuild %s %s\n", __DATE__, __TIME__);
     check_reset();
-    iopins_init();
+    
     gpio_set_level(DRIVER_0_ENABLE, 0);
     gpio_set_level(DRIVER_1_ENABLE, 0);
     gpio_set_level(DRIVER_2_ENABLE, 0);
@@ -926,40 +967,8 @@ extern "C" void app_main(void)
     gpio_set_level(DRIVER_2_ENABLE, 1);
     gpio_set_level(DRIVER_3_ENABLE, 1);
     nvs_init();                             //inicializace pro zápis do flash paměti
-    Uart drivers_uart {
-        DRIVERS_UART,
-        Uart::config_t {
-            .baud_rate = 750000,
-            .data_bits = UART_DATA_8_BITS,
-            .parity = UART_PARITY_DISABLE,
-            .stop_bits = UART_STOP_BITS_1,
-            .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
-            .rx_flow_ctrl_thresh = 122,
-            .use_ref_tick = false
-        },
-        Uart::pins_t {
-            .pin_txd = DRIVERS_UART_TXD,
-            .pin_rxd = DRIVERS_UART_RXD,
-            .pin_rts = UART_PIN_NO_CHANGE,
-            .pin_cts = UART_PIN_NO_CHANGE
-        },
-        Uart::buffers_t {
-            .rx_buffer_size = DRIVERS_UART_BUF_SIZE,
-            .tx_buffer_size = 0,
-            .event_queue_size = 0
-        }
-    };
-    Driver driver0 { drivers_uart, DRIVER_0_ADDRES, DRIVER_0_ENABLE };
-    initDriver(driver0, 16, 32);
 
-    Driver driver1 { drivers_uart, DRIVER_1_ADDRES, DRIVER_1_ENABLE };
-    initDriver(driver1, 16, 32);
 
-    Driver driver2 { drivers_uart, DRIVER_2_ADDRES, DRIVER_2_ENABLE };
-    initDriver(driver2, 16, 32);
-
-    Driver driver3 { drivers_uart, DRIVER_3_ADDRES, DRIVER_3_ENABLE };
-    initDriver(driver3, 16, 32);
 
     
 

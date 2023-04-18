@@ -47,7 +47,7 @@ volatile int motor_speed = MOTOR_SPEED_COEFICIENT/3;       //testovaci motorspee
 volatile int motor_load = 0;
 volatile int motor_stop_sensitivity = 100;
 volatile int potenciometr = 0;
-volatile int i_run = 8;
+volatile int i_run = 31;
 volatile int i_hold = 0;
 volatile bool start_stop = false;
 volatile uint mot_load[2048];
