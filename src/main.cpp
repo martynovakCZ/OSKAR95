@@ -37,11 +37,11 @@ using namespace rb;
 static void initGridUi() {
     using namespace gridui;
     // Initialize WiFi
-    WiFi::startAp("Oskar95Marty","oskaroskar");     //esp vytvoří wifi sít
+    WiFi::startAp("Oskar95","oskar");     //esp vytvoří wifi sít
     // WiFi::connect("Jmeno wifi", "Heslo");    //připojení do místní sítě
     
     // Initialize RBProtocol
-    auto *protocol = new Protocol("burda", "Oskar", "Compiled at " __DATE__ " " __TIME__, [](const std::string& cmd, rbjson::Object* pkt) {
+    auto *protocol = new Protocol("Oskar", "Oskar", "Compiled at " __DATE__ " " __TIME__, [](const std::string& cmd, rbjson::Object* pkt) {
         UI.handleRbPacket(cmd, pkt);
     });
     protocol->start();
