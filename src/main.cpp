@@ -846,6 +846,7 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
             if (zadavaniTrasy_onRelease==1)return;
             if (Vlajka_onRelease==1)return;
             if (Dopravnik_onRelease==1)return;
+            if (spustitTrasu_onRelease ==1)return;
             /*int comeBack0=0;
             int comeBack1=0;
             int comeBack2=0;
