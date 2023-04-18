@@ -1,3 +1,5 @@
+VÍCE NA https://github.com/martynovakCZ/OSKAR95novak
+
 8	OVLÁDÁNÍ
 
 8.1	Zapojení a spuštění
