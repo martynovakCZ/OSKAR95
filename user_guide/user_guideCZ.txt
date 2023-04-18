@@ -1,0 +1,31 @@
+8	OVLÁDÁNÍ
+
+8.1	Zapojení a spuštění
+    K robotické ruce nejprve připojíme do kulatého konektoru v podstavě napájení 10 V. Podstava obsahuje i konektor USB typ B, který však pro běžný chod robotické ruky není potřeba.
+Tento konektor slouží k diagnostice robotické ruky za chodu, nebo k nahrávání nového programu. V případě nutnosti diagnostiky robotické ruky je potřeba nejprve připojit napájení 10 V
+a až poté diagnostický USB konektor. Při běžném použití však toto zapojení není doporučené.
+
+!!!!!!!!Při odpojení napájení za chodu je nutné počkat 10 vteřin, než je možné napájení opět zapojit.!!!!!!!!!!!!!!!!
+
+Důvodem je nutnost vyresetovat automatická nastavení driverů, která jsou po tuto dobu udržována vlivem zbytkového napětí na kondenzátorech obvodu silového napájení.
+Při rychlém odpojení a připojení může dojít k a bzučení motorů bez pohybu. Po zapojení napájení proběhne automatická konfigurace a zarovnání robota do výchozí polohy.
+Pohybu zarovnávání robota bychom neměli bránit. Pro správné zarovnání je nutné aby robot nebyl v žádné osy pohybu v poloze koncového dojezdu, nebo dokonce za polohou koncového dojezdu.
+
+8.2	Propojení
+    Robotická ruka je řízená přes Wi-Fi. K ovládání je nutná aplikace RBController, která je dostupná ke stažení pro Android a Windows. Ovládacím zařízením se nejprve připojíme
+k Wi Fi síti s názvem Oskar95 a zadáme heslo „oskar“. Následně spustíme applikaci RBController a jako jméno majitele zadáme Student. Následně vybereme položku Oskar a rozklikneme ji.
+Na obrazovce se nám objeví ovládací rozhraní.
+
+8.3	Ovládání
+
+8.3.1	Řízení v reálném čase
+    Pokud chceme robota řídit v reálném čase, klikneme v ovládacím rozhraní na položku ruční řízení. Dále ovládáme robota tlačítky v dolní časti obrazovky. Dvojice tlačítek pod sebou ovládají
+jednotlivé krokové motory. Zeleným posuvníkem lze nastavit rychlost pohybu otáčení krokových motorů.
+8.3.2	Řízení nastavením průjezdových bodů
+    Tlačítkem zadávání trasy přejdeme do režimu řízení průjezdovými body. Po stisknutí tlačítka se robot zarovná do výchozí polohy, která je určena koncovými dojezdy. Pro zaručení přesnosti je žádoucí,
+aby žádná osa robota před zarovnáním nebyla v pozici, ve které jsou aktivní koncové dojezdy.
+Následně nastavíme ruku do polohy průjezdového bodu pomocí dvojic tlačítek pro ovládání krokových motorů ve spodní části obrazovky (při rozložení na šířku vlevo dole). Stisknutím tlačítka přidat bod uložíme
+bod do paměti robota. V průběhu nastavování lze také regulovat rychlost pohybu posuvníkem, avšak na výsledném autonomním pohybu se rychlost při nastavování nijak neprojeví. Při nastavování bodů je nutné si dát pozor,
+aby se krokové motory vlivem přetížení v průběhu chodu nezasekly. V takovém případě procesor dále připočítává neprovedené otáčky k výslednému úhlu pohybu a nastavení trasy tudíž neodpovídá reálné uražené dráze.
+Po stisknutí tlačítka spustit trasu se robot opět zarovná do výchozí polohy a následně projede všechny uložené pozice v pořadí, ve kterém byly zadány. Robot provádí uložený pohyb rychlostí,
+která byla při tvorbě bodů nastavena jako poslední. Při stisku tlačítka cyklovat trasu pak robot trasu opakuje stále dokola, dokud není přerušen stiskem jiného tlačítka (vyjma tlačítek pro ovládání otáčení krokových motorů).
