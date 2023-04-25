@@ -15,7 +15,7 @@ Pohybu zarovnávání robota bychom neměli bránit. Pro správné zarovnání j
 
 8.2	Propojení
     Robotická ruka je řízená přes Wi-Fi. K ovládání je nutná aplikace RBController, která je dostupná ke stažení pro Android a Windows. Ovládacím zařízením se nejprve připojíme
-k Wi Fi síti s názvem Oskar95 a zadáme heslo „oskar“. Následně spustíme applikaci RBController a jako jméno majitele zadáme Student. Následně vybereme položku Oskar a rozklikneme ji.
+k Wi Fi síti s názvem Oskar95#3 a zadáme heslo „oskar3“. Následně spustíme applikaci RBController a jako jméno majitele zadáme Student. Následně vybereme položku Oskar a rozklikneme ji.
 Na obrazovce se nám objeví ovládací rozhraní.
 
 8.3	Ovládání

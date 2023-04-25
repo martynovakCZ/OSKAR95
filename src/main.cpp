@@ -51,7 +51,7 @@ using namespace rb;
 static void initGridUi() {
     using namespace gridui;
     // Initialize WiFi
-    WiFi::startAp("Oskar95","oskar");     //esp vytvoří wifi sít
+    WiFi::startAp("Oskar95#3","oskar3");     //esp vytvoří wifi sít
     // WiFi::connect("Jmeno wifi", "Heslo");    //připojení do místní sítě
     
     // Initialize RBProtocol
