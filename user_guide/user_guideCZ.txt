@@ -20,10 +20,14 @@ Na obrazovce se nám objeví ovládací rozhraní.
 
 8.3	Ovládání
 
-8.3.1	Řízení v reálném čase
+8.3.1   Ovládací prvky
+    Každému motoru náleží dvě tlačítka nacházející se ve spodní části obrazovky. Tato tlačítka leží vždy nad sebou. Tlačítko je aktivní pokud jej držíme stisknuté.
+
+
+8.3.2	Řízení v reálném čase
     Pokud chceme robota řídit v reálném čase, klikneme v ovládacím rozhraní na položku ruční řízení. Dále ovládáme robota tlačítky v dolní časti obrazovky. Dvojice tlačítek pod sebou ovládají
 jednotlivé krokové motory. Zeleným posuvníkem lze nastavit rychlost pohybu otáčení krokových motorů.
-8.3.2	Řízení nastavením průjezdových bodů
+8.3.3	Řízení nastavením průjezdových bodů
     Tlačítkem zadávání trasy přejdeme do režimu řízení průjezdovými body. Po stisknutí tlačítka se robot zarovná do výchozí polohy, která je určena koncovými dojezdy. Pro zaručení přesnosti je žádoucí,
 aby žádná osa robota před zarovnáním nebyla v pozici, ve které jsou aktivní koncové dojezdy.
 Následně nastavíme ruku do polohy průjezdového bodu pomocí dvojic tlačítek pro ovládání krokových motorů ve spodní části obrazovky (při rozložení na šířku vlevo dole). Stisknutím tlačítka přidat bod uložíme
@@ -31,3 +35,4 @@ bod do paměti robota. V průběhu nastavování lze také regulovat rychlost po
 aby se krokové motory vlivem přetížení v průběhu chodu nezasekly. V takovém případě procesor dále připočítává neprovedené otáčky k výslednému úhlu pohybu a nastavení trasy tudíž neodpovídá reálné uražené dráze.
 Po stisknutí tlačítka spustit trasu se robot opět zarovná do výchozí polohy a následně projede všechny uložené pozice v pořadí, ve kterém byly zadány. Robot provádí uložený pohyb rychlostí,
 která byla při tvorbě bodů nastavena jako poslední. Při stisku tlačítka cyklovat trasu pak robot trasu opakuje stále dokola, dokud není přerušen stiskem jiného tlačítka (vyjma tlačítek pro ovládání otáčení krokových motorů).
+    Nastavení trasy (uložené průjezdové body). můžeme kompletně vymazat stisknutím tlačítka reset.
