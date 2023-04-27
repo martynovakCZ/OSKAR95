@@ -791,6 +791,10 @@ static void initDriver(Driver& driver, const int iRun, const int iHold) {
 
                             pridatBod_onRelease = false;
                         }
+                        if(synchronize_onRelease==true){
+                            synchroMotors( driver0,  driver1,  driver2,  driver3,  opto0,  opto1,  opto2,  opto3);
+                            synchronize_onRelease = false;
+                        }
 
 
                         if(spustitTrasu_onRelease==1){return;}
